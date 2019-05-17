@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'tinymce',
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
     'events.apps.EventsConfig',
     'partners.apps.PartnersConfig',
     'posts.apps.PostsConfig'
@@ -133,6 +134,7 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# TinyMCE configuration
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
     'width': 800,
