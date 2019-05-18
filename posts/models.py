@@ -1,27 +1,9 @@
 from django.db import models
+from django.conf import settings
 from tinymce import HTMLField
+from filebrowser.fields import FileBrowseField
 
 # Create your models here.
-
-class Post(models.Model):
-	author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=SET_NULL)
-	is_published = models.BooleanField(default=True)
-	title = models.CharField(max_length=700)
-	post_slug = models.SlugField(unique=True)
-	publication_date = models.DateTimeField(auto_now_add=True)
-	featured_image = FileBrowseField('Featured image', max_length=1000, extensions=['.jpg', 
-														'.jpeg', 
-														'.gif', 
-														'.png', 
-														'.tif', 
-														'.tiff'], blank=True)
-	post_content = HTMLField('Content', blank=True)
-	post_category = models.ManyToManyField(Category)
-	post_tag = models.ManyToManyField(Tag)
-
-
-	def __str__(self):
-		return self.title
 
 class Category(models.Model):
 	category_name = models.CharField(max_length=200)
@@ -45,3 +27,23 @@ class Tag(models.Model):
 
 	def __str__(self):
 		return self.tag_name
+
+class Post(models.Model):
+	author = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
+	is_published = models.BooleanField(default=True)
+	title = models.CharField(max_length=700)
+	post_slug = models.SlugField(unique=True)
+	publication_date = models.DateTimeField(auto_now_add=True)
+	featured_image = FileBrowseField('Featured image', max_length=1000, extensions=['.jpg', 
+														'.jpeg', 
+														'.gif', 
+														'.png', 
+														'.tif', 
+														'.tiff'], blank=True)
+	post_content = HTMLField('Content', blank=True)
+	post_category = models.ManyToManyField(Category)
+	post_tag = models.ManyToManyField(Tag)
+
+
+	def __str__(self):
+		return self.title
