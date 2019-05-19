@@ -6,7 +6,7 @@ from .models import Post, Category, Tag
 
 class PostAdmin(admin.ModelAdmin):
 	list_display = ('get_title', 'author', 'publication_date', 'is_published', 'get_categories', 'get_image')
-	list_display_links = ('get_title',)
+	list_display_links = ('get_title', 'get_image')
 	search_fields = ('get_title', 'partner_description')
 	list_editable = ('is_published',)
 	list_per_page = 25
