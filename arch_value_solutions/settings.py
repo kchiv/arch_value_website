@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',
+    'localflavor',
+    'django_countries',
     'events.apps.EventsConfig',
     'partners.apps.PartnersConfig',
     'posts.apps.PostsConfig'
