@@ -4,9 +4,9 @@ from .models import Event
 # Register your models here.
 
 class EventAdmin(admin.ModelAdmin):
-	list_display = ('event_name', 'event_start', 'event_end', 'event_street', 'event_city', 'event_state', 'get_partners')
+	list_display = ('event_name', 'event_start', 'event_end', 'event_country', 'event_city', 'event_state', 'get_partners')
 	list_display_links = ('event_name',)
-	search_fields = ('event_name', 'event_street', 'event_city', 'event_state', 'event_partners')
+	search_fields = ('event_name', 'event_country', 'event_city', 'event_state', 'event_partners')
 	list_per_page = 25
 
 	def get_partners(self, obj):
