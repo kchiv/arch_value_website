@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
+from django.utils.html import strip_tags
 from tinymce import HTMLField
 from filebrowser.fields import FileBrowseField
 
@@ -46,7 +47,7 @@ class Post(models.Model):
 	is_published = models.BooleanField(default=False, help_text='Check the box to publish post.')
 	meta_title = models.CharField(max_length=100, unique=True, blank=False, help_text='Title that shows up in Google search.')
 	header_title = models.CharField(max_length=100, unique=True, blank=True, help_text='Title that shows on page. Should typically match meta title.')
-	meta_description = models.TextField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
+	meta_description = models.CharField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
 	publication_date = models.DateTimeField(help_text='Original publication date.')
 	modification_date = models.DateTimeField(auto_now=True, help_text='Date the post was modified from original version.')
 	featured_image = FileBrowseField('Featured image', max_length=500, extensions=['.jpg', 
@@ -70,7 +71,7 @@ class Post(models.Model):
 		if not self.post_slug:
 			self.post_slug = slugify(self.meta_title)
 		if not self.meta_description:
-			self.meta_description = self.post_content[:230] + '...'
+			self.meta_description = strip_tags(self.post_content[:230]) + '...'
 		if not self.header_title:
 			self.header_title = self.meta_title
 		super(Post, self).save(*args, **kwargs)
