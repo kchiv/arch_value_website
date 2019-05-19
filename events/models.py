@@ -17,7 +17,6 @@ class Event(models.Model):
 	event_city = models.CharField(max_length=100, blank=True)
 	event_state = USStateField(null=True, blank=True, verbose_name='Event state (US only)')
 	event_partners = models.ManyToManyField(Partner, blank=True)
-	# create fields for international events
 
 	def __str__(self):
 		return self.event_name
