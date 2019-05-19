@@ -14,6 +14,7 @@ class PartnerAdmin(admin.ModelAdmin):
 		# show image in object grid
 		if obj.partner_logo:
 			# must check if object exists otherwise throws an error
+			# mark_safe() used to display html
 			return mark_safe('<img src="{thumb}" width="100" />'.format(thumb=obj.partner_logo.url,))
 		else:
 			return 'No image available'
