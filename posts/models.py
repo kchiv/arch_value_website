@@ -45,11 +45,11 @@ class Post(models.Model):
 	author = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
 	is_published = models.BooleanField(default=True, help_text='Check the box to publish post.')
 	meta_title = models.CharField(max_length=100, unique=True, blank=False, help_text='Title that shows up in Google search.')
-	header_title = models.CharField(max_length=100, unique=True, help_text='Title that shows on page.')
+	header_title = models.CharField(max_length=100, unique=True, help_text='Title that shows on page. Should typically match meta title.')
 	post_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL.')
-	meta_description = models.CharField(max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
-	publication_date = models.DateTimeField(blank=True, help_text='Original publication date.')
-	modification_date = models.DateTimeField(blank=True, help_text='Date the post was modified from original version.')
+	meta_description = models.CharField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
+	publication_date = models.DateTimeField(help_text='Original publication date.')
+	modification_date = models.DateTimeField(auto_now=True, help_text='Date the post was modified from original version.')
 	featured_image = FileBrowseField('Featured image', max_length=500, extensions=['.jpg', 
 																					'.jpeg', 
 																					'.gif', 
