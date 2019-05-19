@@ -6,6 +6,7 @@ from datetime import date
 
 class Event(models.Model):
 	event_name = models.CharField(max_length=200)
+	is_published = models.BooleanField(default=True, help_text='Check the box to publish event.')
 	event_start = models.DateField(default=date.today)
 	event_end = models.DateField(default=date.today)
 	event_address = models.CharField(max_length=500)
