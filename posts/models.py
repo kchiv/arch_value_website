@@ -8,8 +8,8 @@ from filebrowser.fields import FileBrowseField
 
 class Category(models.Model):
 	category_name = models.CharField(max_length=50, blank=False, unique=True)
-	is_published = models.BooleanField(default=True)
-	category_slug = models.SlugField(blank=True, unique=True)
+	is_published = models.BooleanField(default=True, help_text='Check the box to publish category.')
+	category_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 	category_image = FileBrowseField('Category image', max_length=500, extensions=['.jpg', 
 														'.jpeg', 
 														'.gif', 
@@ -30,8 +30,8 @@ class Category(models.Model):
 		return self.category_name
 
 class Tag(models.Model):
-	tag_name = models.CharField(max_length=50, blank=False, unique=True)
-	tag_slug = models.SlugField(blank=True, unique=True)
+	tag_name = models.CharField(max_length=50, blank=False, unique=True, help_text='Tag should be short. 1 or 2 words and less than 50 characters.')
+	tag_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 
 	def save(self, *args, **kwargs):
 		if not self.tag_slug:
@@ -46,7 +46,6 @@ class Post(models.Model):
 	is_published = models.BooleanField(default=True, help_text='Check the box to publish post.')
 	meta_title = models.CharField(max_length=100, unique=True, blank=False, help_text='Title that shows up in Google search.')
 	header_title = models.CharField(max_length=100, unique=True, help_text='Title that shows on page. Should typically match meta title.')
-	post_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL.')
 	meta_description = models.CharField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
 	publication_date = models.DateTimeField(help_text='Original publication date.')
 	modification_date = models.DateTimeField(auto_now=True, help_text='Date the post was modified from original version.')
@@ -55,16 +54,17 @@ class Post(models.Model):
 																					'.gif', 
 																					'.png', 
 																					'.tif', 
-																					'.tiff'], blank=True, help_text='Image featured in post. Must be at least 1,000x1,000')
+																					'.tiff'], blank=True, help_text='Image featured in post. Must be at least 1,000px X 1,000px')
 	thumbnail_image = FileBrowseField('Thumbnail image', max_length=500, extensions=['.jpg', 
 																					'.jpeg', 
 																					'.gif', 
 																					'.png', 
 																					'.tif', 
-																					'.tiff'], blank=True, help_text='Thumbnail image used across site. Must be at least 1,000x1,000')
+																					'.tiff'], blank=True, help_text='Thumbnail image used across site. Must be at least 1,000px X 1,000px')
 	post_content = HTMLField('Content', blank=True)
 	post_category = models.ManyToManyField(Category)
 	post_tag = models.ManyToManyField(Tag)
+	post_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 
 	def save(self, *args, **kwargs):
 		if not self.post_slug:
