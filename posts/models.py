@@ -43,7 +43,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
 	author = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
-	is_published = models.BooleanField(default=True, help_text='Check the box to publish post.')
+	is_published = models.BooleanField(default=False, help_text='Check the box to publish post.')
 	meta_title = models.CharField(max_length=100, unique=True, blank=False, help_text='Title that shows up in Google search.')
 	header_title = models.CharField(max_length=100, unique=True, blank=True, help_text='Title that shows on page. Should typically match meta title.')
 	meta_description = models.TextField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
