@@ -25,6 +25,7 @@ urlpatterns = [
     re_path(r'^tinymce/', include('tinymce.urls')),
     path('events/', include('events.urls')),
     path('partners/', include('partners.urls')),
+    path('posts/', include('posts.urls')),
 ]
 
 if settings.DEBUG:
