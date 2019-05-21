@@ -13,3 +13,11 @@ def post_preview(request, post_id):
 		'post': post
 	}
 	return render(request, 'posts/post_page.html', context)
+
+def post_detail(request, post_slug, post_id):
+	post = get_object_or_404(Post, pk=post_id)
+
+	context = {
+		'post': post
+	}
+	return render(request, 'posts/post_page.html', context)
