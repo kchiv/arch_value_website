@@ -12,4 +12,4 @@ def post_preview(request, post_id):
 	context = {
 		'post': post
 	}
-	return render(request, 'posts/post_preview.html', context)
+	return render(request, 'posts/post_page.html', context)
