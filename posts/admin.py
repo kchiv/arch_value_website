@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from .models import Post, Category, Tag
 
@@ -10,6 +11,11 @@ class PostAdmin(admin.ModelAdmin):
 	search_fields = ('get_title', 'partner_description')
 	list_editable = ('is_published',)
 	list_per_page = 25
+
+	def view_on_site(self, obj):
+		# adds link to view from django admin object
+		url = reverse('post_preview', kwargs={'post_id': obj.pk})
+		return url
 
 	def get_categories(self, obj):
 		# loop through and dsiplay category names
