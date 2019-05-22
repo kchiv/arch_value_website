@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tinymce',
     'localflavor',
     'django_countries',
+    'rest_framework',
     'events.apps.EventsConfig',
     'partners.apps.PartnersConfig',
     'posts.apps.PostsConfig'
