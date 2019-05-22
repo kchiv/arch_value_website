@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'events.apps.EventsConfig',
     'partners.apps.PartnersConfig',
-    'posts.apps.PostsConfig'
+    'posts.apps.PostsConfig',
+    'pages.apps.PagesConfig'
 ]
 
 MIDDLEWARE = [
