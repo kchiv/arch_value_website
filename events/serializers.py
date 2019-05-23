@@ -3,6 +3,7 @@ from django_countries.serializers import CountryFieldMixin
 from .models import Event
 
 class EventSerializer(CountryFieldMixin, serializers.ModelSerializer):
+
 	class Meta:
 		model = Event
 		fields = ('event_name',
@@ -15,3 +16,4 @@ class EventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 				'event_city',
 				'event_state',
 				'event_partners')
+		depth = 1

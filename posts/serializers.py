@@ -17,3 +17,4 @@ class PostSerializer(serializers.ModelSerializer):
 				'post_category',
 				'post_tag',
 				'post_slug')
+		depth = 1

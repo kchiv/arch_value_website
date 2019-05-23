@@ -10,3 +10,4 @@ class PartnerSerializer(serializers.ModelSerializer):
 				'partner_url',
 				'partner_description',
 				'partner_tag')
+		depth = 1
