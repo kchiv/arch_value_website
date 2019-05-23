@@ -23,9 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^admin/filebrowser/', site.urls),
     re_path(r'^tinymce/', include('tinymce.urls')),
-    path('events/', include('events.urls')),
-    path('partners/', include('partners.urls')),
+    path('events-api/', include('events.urls')),
+    path('partners-api/', include('partners.urls')),
     path('posts/', include('posts.urls')),
+    path('pages/', include('pages.urls')),
 ]
 
 if settings.DEBUG:
