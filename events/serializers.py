@@ -6,14 +6,5 @@ class EventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 
 	class Meta:
 		model = Event
-		fields = ('event_name',
-				'is_published',
-				'event_start',
-				'event_end',
-				'event_description',
-				'event_country',
-				'event_street',
-				'event_city',
-				'event_state',
-				'event_partners')
+		fields = '__all__'
 		depth = 1
