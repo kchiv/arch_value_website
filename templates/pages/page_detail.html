@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page.meta_title }}{{ block.super }}{% endblock %}
+
+{% block description %}{{ page.meta_description }}{% endblock %}
+
+{% block inline_css %}
+	<style>
+		{{ page.custom_css }}
+	</style>
+{% endblock %}
+
+{% block script %}
+	<script>
+		{{ page.custom_js }}
+	</script>
+{% endblock %}
+
+{% block content %}
+	{{ page.page_content }}
+{% endblock %}
