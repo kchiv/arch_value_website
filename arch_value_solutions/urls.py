@@ -18,13 +18,16 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from filebrowser.sites import site
-from .views import HomePageView
+from .views import HomePageView, ContactPageView, OemServicePageView, DistServicePageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^admin/filebrowser/', site.urls),
     re_path(r'^tinymce/', include('tinymce.urls')),
     path('', HomePageView.as_view(), name='home'),
+    path('contact/', ContactPageView.as_view(), name='contact'),
+    path('services/oem/', OemServicePageView.as_view(), name='oem'),
+    path('services/distributor/', DistServicePageView.as_view(), name='distributor'),
     path('events-api/', include('events.urls')),
     path('partners-api/', include('partners.urls')),
     path('posts/', include('posts.urls')),
