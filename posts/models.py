@@ -66,6 +66,8 @@ class Post(models.Model):
 	post_category = models.ManyToManyField(Category, blank=True)
 	post_tag = models.ManyToManyField(Tag, blank=True)
 	post_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
+	custom_js = models.TextField(blank=True)
+	custom_css = models.TextField(blank=True)
 
 	def save(self, *args, **kwargs):
 		if not self.post_slug:
