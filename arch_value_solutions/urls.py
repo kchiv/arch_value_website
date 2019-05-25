@@ -30,7 +30,7 @@ urlpatterns = [
     path('services/distributor/', DistServicePageView.as_view(), name='distributor'),
     path('events-api/', include('events.urls')),
     path('partners-api/', include('partners.urls')),
-    path('posts/', include('posts.urls')),
+    path('blog/', include('posts.urls')),
     path('pages/', include('pages.urls')),
 ]
 
