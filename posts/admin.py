@@ -6,7 +6,7 @@ from .models import Post, Category, Tag
 # Register your models here.
 
 class PostAdmin(admin.ModelAdmin):
-	list_display = ('get_title', 'author', 'publication_date', 'is_published', 'get_categories', 'get_image')
+	list_display = ('get_title', 'get_name', 'publication_date', 'is_published', 'get_categories', 'get_image')
 	list_display_links = ('get_title', 'get_image')
 	search_fields = ('get_title', 'partner_description')
 	list_editable = ('is_published',)
@@ -37,12 +37,17 @@ class PostAdmin(admin.ModelAdmin):
 		else:
 			return 'No title available'
 
+	def get_name(self, obj):
+		# user friendly author name display
+		return '%s %s' % (obj.author.first_name, obj.author.last_name)
+
 	get_image.allow_tags = True
 
 	# user friendly names in list display
 	get_categories.short_description = 'Categories'
 	get_image.short_description = 'Featured Image'
 	get_title.short_description = 'Title'
+	get_name.short_description = 'Author'
 
 class CategoryAdmin(admin.ModelAdmin):
 	list_display = ('category_name', 'is_published', 'get_image', 'get_posts')
