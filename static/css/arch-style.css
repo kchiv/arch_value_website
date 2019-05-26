@@ -1,5 +1,11 @@
 /*** Global Styles ***/
 
+	/** Font Style **/
+
+	body {
+		font-family: 'Roboto', sans-serif;
+	}
+
 	/** Top Navigation **/
 	.bg-custom {
 		background-color: #3a3a3a;
