@@ -1,59 +1,5 @@
 {% load static %}
 
-<style>
-	.bg-custom {
-		background-color: #3a3a3a;
-	}
-
-	.dropdown-menu-custom {
-		border: none;
-		background-color: #3a3a3a;
-	}
-
-	.dropdown-menu-custom .dropdown-item {
-		color: rgba(255,255,255,.5);
-	}
-
-	.dropdown-menu-custom .dropdown-item:focus, 
-	.dropdown-menu-custom .dropdown-item:hover {
-		color: rgba(255,255,255,.75);
-		background-color: #3a3a3a;
-	}
-
-	.dropdown-menu-custom .dropdown-item.active,
-	.dropdown-menu-custom .dropdown-item:active {
-		color: #fff;
-		background-color: #3a3a3a;
-	}
-
-	.navbar-dark .navbar-toggler-custom {
-		border-color: transparent;
-	}
-
-	.navbar-dark .navbar-toggler-custom:focus,
-	.navbar-dark .navbar-toggler-custom:active {
-		outline: none;
-		box-shadow: none;
-	}
-
-	.arch-btn-outline-primary {
-		color: #ff6601;
-		border-color: #ff6601;
-	}
-
-	.arch-btn-outline-primary:hover {
-		color: #fff;
-		background-color: #ff6601;
-		border-color: #ff6601;
-	}
-
-	.arch-btn-outline-primary:not(:disabled):not(.disabled):active {
-		color: #fff;
-		background-color: #ff6601;
-		border-color: #ff6601;
-	}
-</style>
-
 <nav class="navbar navbar-expand-md navbar-dark bg-custom">
   <a class="navbar-brand" href="{% url 'home' %}">
   	<img src="{% static 'img/logo.png' %}" width="90" alt="">
@@ -90,6 +36,6 @@
         <a class="nav-link" href="{% url 'pages:page_detail' 'about' %}">Who We Are</a>
       </li>
     </ul>
-    <a href="{% url 'contact' %}" class="btn btn-outline-primary arch-btn-outline-primary my-md-auto my-sm-3" role="button" aria-pressed="true">Contact Us</a>
+    <a href="{% url 'contact' %}" class="btn btn-outline-primary arch-btn-outline-primary my-md-auto my-4" role="button" aria-pressed="true">Contact Us</a>
   </div>
 </nav>
