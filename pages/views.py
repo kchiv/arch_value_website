@@ -5,8 +5,8 @@ from .models import Page
 # Create your views here.
 
 @staff_member_required
-def page_preview(request, page_id):
-	page = get_object_or_404(Page, pk=page_id)
+def page_preview(request, page_slug):
+	page = get_object_or_404(Page, page_slug=page_slug)
 
 	context = {
 		'page': page
