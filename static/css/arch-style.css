@@ -6,6 +6,12 @@
 		font-family: 'Roboto', sans-serif;
 	}
 
+	/** Background Style **/
+
+	body {
+		background-color: #3a3a3a;
+	}
+
 	/** Top Navigation **/
 	.bg-custom {
 		background-color: #3a3a3a;
