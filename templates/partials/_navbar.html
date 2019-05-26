@@ -2,36 +2,77 @@
 
 <style>
 	.bg-custom {
-		background-color: #3A3A3A;
+		background-color: #3a3a3a;
 	}
 
-	.navbar-light .navbar-nav .nav-link {
-		color: #FFFFFF;
+	.dropdown-menu-custom {
+		border: none;
+		background-color: #3a3a3a;
 	}
 
-	.navbar-light .navbar-nav .nav-link:focus, 
-	.navbar-light .navbar-nav .nav-link:hover {
-		color: #B8B8B8;
+	.dropdown-menu-custom .dropdown-item {
+		color: rgba(255,255,255,.5);
+	}
+
+	.dropdown-menu-custom .dropdown-item:focus, 
+	.dropdown-menu-custom .dropdown-item:hover {
+		color: rgba(255,255,255,.75);
+		background-color: #3a3a3a;
+	}
+
+	.dropdown-menu-custom .dropdown-item.active,
+	.dropdown-menu-custom .dropdown-item:active {
+		color: #fff;
+		background-color: #3a3a3a;
+	}
+
+	.navbar-dark .navbar-toggler-custom {
+		border-color: transparent;
+	}
+
+	.navbar-dark .navbar-toggler-custom:focus,
+	.navbar-dark .navbar-toggler-custom:active {
+		outline: none;
+		box-shadow: none;
+	}
+
+	.arch-btn-outline-primary {
+		color: #ff6601;
+		border-color: #ff6601;
+	}
+
+	.arch-btn-outline-primary:hover {
+		color: #fff;
+		background-color: #ff6601;
+		border-color: #ff6601;
+	}
+
+	.arch-btn-outline-primary:not(:disabled):not(.disabled):active {
+		color: #fff;
+		background-color: #ff6601;
+		border-color: #ff6601;
 	}
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-custom">
+<nav class="navbar navbar-expand-md navbar-dark bg-custom">
   <a class="navbar-brand" href="{% url 'home' %}">
-  	<img src="{% static 'img/logo.png' %}" width="100" alt="">
+  	<img src="{% static 'img/logo.png' %}" width="90" alt="">
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+  <button class="navbar-toggler navbar-toggler-custom" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon navbar-toggler-icon-custom"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link {% if '/services/' in request.get_full_path %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Services
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'oem' %}">OEM Services</a>
-          <a class="dropdown-item" href="{% url 'distributor' %}">Distributor Services</a>
+        <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+          {% url 'oem' as oem_url %}
+          <a class="dropdown-item {% if request.get_full_path == oem_url %}active{% endif %}" href="{% url 'oem' %}">OEM Services</a>
+          {% url 'distributor' as distributor_url %}
+          <a class="dropdown-item {% if request.get_full_path == distributor_url %}active{% endif %}" href="{% url 'distributor' %}">Distributor Services</a>
         </div>
       </li>
       {# Need to create page object with slug 'partners' #}
@@ -49,6 +90,6 @@
         <a class="nav-link" href="{% url 'pages:page_detail' 'about' %}">Who We Are</a>
       </li>
     </ul>
-    <a href="{% url 'contact' %}" class="btn btn-outline-primary" role="button" aria-pressed="true">Contact Us</a>
+    <a href="{% url 'contact' %}" class="btn btn-outline-primary arch-btn-outline-primary my-md-auto my-sm-3" role="button" aria-pressed="true">Contact Us</a>
   </div>
 </nav>
