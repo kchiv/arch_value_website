@@ -1,1 +1,25 @@
-<h1>Testing</h1>
+{% extends 'base.html' %}
+
+{% block title %}Blog{{ block.super }}{% endblock %}
+
+{% block description %}Needs description{% endblock %}
+
+{% block inline_css %}
+	<style>
+		
+	</style>
+{% endblock %}
+
+{% block script %}
+	<script>
+		
+	</script>
+{% endblock %}
+
+{% block social_data %}{% endblock %}
+
+{% block schema_data %}{% endblock %}
+
+{% block content %}
+	<h1>Testing Blog</h1>
+{% endblock %}
