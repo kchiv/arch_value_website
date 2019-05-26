@@ -12,8 +12,8 @@ class BlogHomePageView(TemplateView):
 	template_name = 'posts/index.html'
 
 @staff_member_required
-def post_preview(request, post_id):
-	post = get_object_or_404(Post, pk=post_id)
+def post_preview(request, post_slug, post_id):
+	post = get_object_or_404(Post, pk=post_id, post_slug=post_slug)
 
 	context = {
 		'post': post
