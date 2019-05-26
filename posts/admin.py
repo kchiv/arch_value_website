@@ -14,7 +14,8 @@ class PostAdmin(admin.ModelAdmin):
 
 	def view_on_site(self, obj):
 		# adds link to view from django admin object
-		url = reverse('post_preview', kwargs={'post_id': obj.pk})
+		url = reverse('posts:post_preview', kwargs={'post_id': obj.pk,
+													'post_slug': obj.post_slug})
 		return url
 
 	def get_categories(self, obj):
