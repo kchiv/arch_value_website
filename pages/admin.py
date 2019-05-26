@@ -12,7 +12,7 @@ class PageAdmin(admin.ModelAdmin):
 
 	def view_on_site(self, obj):
 		# adds link to view from django admin object
-		url = reverse('page_preview', kwargs={'page_id': obj.pk})
+		url = reverse('pages:page_preview', kwargs={'page_slug': obj.page_slug})
 		return url
 
 admin.site.register(Page, PageAdmin)
