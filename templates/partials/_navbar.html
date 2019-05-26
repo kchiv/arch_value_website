@@ -1,6 +1,21 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<style>
+	.bg-custom {
+		background-color: #3A3A3A;
+	}
+
+	.navbar-light .navbar-nav .nav-link {
+		color: #FFFFFF;
+	}
+
+	.navbar-light .navbar-nav .nav-link:focus, 
+	.navbar-light .navbar-nav .nav-link:hover {
+		color: #B8B8B8;
+	}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-custom">
   <a class="navbar-brand" href="{% url 'home' %}">
   	<img src="{% static 'img/logo.png' %}" width="100" alt="">
   </a>
