@@ -28,7 +28,7 @@
 
 	{# Services Tab CSS #}
 	.service-tab-bg {
-		background-image: url({% static 'img/DSC_2826_optim.jpg' %});
+		background-image: url({% static 'img/DSC_2867.jpg' %});
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
@@ -41,8 +41,48 @@
 
 	.service-tab-hero-row {
 		padding-top: 80px;
-		padding-bottom: 80px;
+		padding-bottom: 50px;
 	}
+
+	.service-nav-tabs {
+		border-bottom: none;
+	}
+
+	.service-tab {
+		width: 180px;
+		background-color: #b8b8b8;
+	}
+
+	.service-tab u {
+		text-decoration-color: #ff6601;
+		text-underline-position: under;
+	}
+
+	.service-nav-tabs .nav-link {
+		color: #3a3a3a;
+	}
+
+	.service-nav-tabs .nav-link:hover {
+		color: #606060;
+	}
+
+	.service-nav-tabs .nav-link:hover {
+		border-color: transparent;
+	}
+
+	.service-nav-tabs .nav-link.active {
+		background-color: #3a3a3a;
+		border-color: #3a3a3a;
+		color: #fff;
+	}
+
+	.service-nav-tabs .nav-item {
+		margin-left: 5px;
+		margin-right: 5px;
+		margin-bottom: 0px;
+	}
+
+
 </style>
 {% endblock %}
 
@@ -73,7 +113,7 @@
 				<div class="col-2 offset-5 arch-underline"></div>
 			</div>
 		</div>
-		<div class="col-8 offset-2 mb-5">
+		<div class="col-md-8 col-10 offset-md-2 offset-1 mb-5">
 			<h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h5>
 		</div>
 	</div>
@@ -85,8 +125,29 @@
 			<div class="row">
 				<div class="col-12 service-tab-hero-row">
 					<h3 class="text-center">Adding value to OEM and distribution partners</h3>
-					
 				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-lg-6 col-md-8 col-12">
+					<ul class="nav nav-tabs service-nav-tabs justify-content-center" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link service-tab text-center active" id="oem-tab" data-toggle="tab" href="#oem" role="tab" aria-controls="oem" aria-selected="true"><u>OEMs</u></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link service-tab text-center" id="distributor-tab" data-toggle="tab" href="#distributor" role="tab" aria-controls="distributor" aria-selected="false"><u>Distributors</u></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="oem" role="tabpanel" aria-labelledby="oem-tab">Tester</div>
+				<div class="tab-pane fade" id="distributor" role="tabpanel" aria-labelledby="distributor-tab">Tester2</div>
 			</div>
 		</div>
 	</div>
