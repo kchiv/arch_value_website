@@ -8,6 +8,7 @@
 
 {% block inline_css %}
 <style type="text/css">
+	{# Hero CSS #}
 	.homepage-hero {
 		background-image: url({% static 'img/DSC_2826_optim.jpg' %});
 		background-repeat: no-repeat;
@@ -23,6 +24,24 @@
 	.hp-hero-row {
 		padding-top: 130px;
 		padding-bottom: 130px;
+	}
+
+	{# Services Tab CSS #}
+	.service-tab-bg {
+		background-image: url({% static 'img/DSC_2826_optim.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		color: #fff;
+	}
+
+	.service-tab-bg-layer {
+		background: linear-gradient(135deg, #DEDEDE96 0%, #46454596 100%);
+	}
+
+	.service-tab-hero-row {
+		padding-top: 80px;
+		padding-bottom: 80px;
 	}
 </style>
 {% endblock %}
@@ -59,5 +78,17 @@
 		</div>
 	</div>
 </div>
-{# OEM/Distributor Tab #}
+{# Services Tab #}
+<div class="service-tab-bg">
+	<div class="service-tab-bg-layer">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 service-tab-hero-row">
+					<h3 class="text-center">Adding value to OEM and distribution partners</h3>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
