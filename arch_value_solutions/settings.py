@@ -25,7 +25,7 @@ SECRET_KEY = 'ppf=1fe_2shez2t=_r_3bqkfypk$!8^i0fqbv-a*(lesw#=fpg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.86.247']
 
 
 # Application definition
