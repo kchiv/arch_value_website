@@ -19,6 +19,10 @@
 			border-bottom: 3px solid #ff6601;
 		}
 
+		.arch-underline-white {
+			border-bottom: 3px solid #fff;
+		}
+
 	/** Top Navigation **/
 	.bg-custom {
 		background-color: #3a3a3a;
