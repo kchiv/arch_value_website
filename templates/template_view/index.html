@@ -8,6 +8,10 @@
 
 {% block inline_css %}
 <style type="text/css">
+	{# Global CSS #}
+	.arch-brand-color {
+		color: #ff6601;
+	}
 	{# Hero CSS #}
 	.homepage-hero {
 		background-image: url({% static 'img/DSC_2826_optim.jpg' %});
@@ -93,119 +97,56 @@
 	.service-tab-pane p {
 		color: #fff;
 	}
+
+	{# Testimonial CSS #}
+
+	.test-bg-image {
+		background: linear-gradient(-45deg, #E8900099 0%, #E75C0099 100%), url({% static 'img/DSC_2859.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		color: #fff;
+	}
+
+	.arch-quote:first-child:before {
+		font-family: "Font Awesome 5 Free";
+		font-style: normal;
+		content: "\f10d";
+	    color: #b8b8b8;
+	    font-size: 3em;
+	    font-weight: 700;
+	    opacity: .3;
+	    position: absolute;
+	    top: -0.7em;
+	    left: 0em;
+	    text-shadow: none;
+	}
+
+	.test-carousel-inner {
+		position: initial;
+	}
+
+	.test-carousel-indicators {
+		position: relative;
+	}
+
+	.test-carousel-indicators li {
+		background-color: #3a3a3a;
+	}
+
+	.test-copy-block {
+		height: 200px;
+	}
 </style>
 {% endblock %}
 
 {% block content %}
 {# Hero #}
-<div class="homepage-hero">
-	<div class="hero-layer">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 hp-hero-row">
-					<h1>Supporting The Most Innovative Brands In The Industry</h1>
-					<div class="row">
-						<div class="col-6 mt-3">
-							<a href="{% url 'contact' %}" class="btn btn-primary btn-block arch-btn-primary" role="button" aria-pressed="true">Get In Touch</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+{% include 'partials/_hp_hero.html' %}
 {# What Is Arch Value #}
-<div class="container-fluid">
-	<div class="row justify-content-center bg-white">
-		<div class="col-12 mt-5 mb-3">
-			<h6 class="text-center font-weight-normal">What is Arch Value Solutions?</h6>
-			<div class="row justify-content-center">
-				<div class="col-2 arch-underline"></div>
-			</div>
-		</div>
-		<div class="col-md-8 col-10 mb-5">
-			<h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h5>
-		</div>
-	</div>
-</div>
+{% include 'partials/_hp_what_is_arch.html' %}
 {# Services Tab #}
-<div class="service-tab-bg">
-	<div class="service-tab-bg-layer">
-		<div class="container">
-			<div class="row">
-				<div class="col-12 service-tab-hero-row">
-					<h3 class="text-center">Adding value to OEM and distribution partners</h3>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-lg-6 col-md-8 col-12">
-					<ul class="nav nav-tabs service-nav-tabs justify-content-center" id="myTab" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link service-tab text-center active" id="oem-tab" data-toggle="tab" href="#oem" role="tab" aria-controls="oem" aria-selected="true"><u>OEMs</u></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link service-tab text-center" id="distributor-tab" data-toggle="tab" href="#distributor" role="tab" aria-controls="distributor" aria-selected="false"><u>Distributors</u></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="container">
-	<div class="row mt-5">
-		<div class="col-12">
-			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane service-tab-pane fade show active" id="oem" role="tabpanel" aria-labelledby="oem-tab">
-					<div class="row justify-content-center">
-						<div class="col-md-4 col-10 text-center">
-							<i class="fas fa-bullhorn fa-3x"></i>
-							<h5 class="my-3">Brand Marketing</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-						<div class="col-md-4 col-10 text-center mt-md-0 mt-sm-2 mt-2">
-							<i class="fas fa-university fa-3x"></i>
-							<h5 class="my-3">Training &amp; Education</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-						<div class="col-md-4 col-10 text-center mt-md-0 mt-sm-2 mt-2">
-							<i class="fas fa-search-dollar fa-3x"></i>
-							<h5 class="my-3">Sales Strategy</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-					<div class="row justify-content-center">
-						<div class="col-md-3 mt-4">
-							<a href="{% url 'oem' %}" class="btn btn-primary btn-block arch-btn-primary" role="button" aria-pressed="true">Learn More</a>
-						</div>
-					</div>
-				</div>
-				<div class="tab-pane service-tab-pane fade" id="distributor" role="tabpanel" aria-labelledby="distributor-tab">
-					<div class="row justify-content-center">
-						<div class="col-md-4 col-10 text-center">
-							<i class="far fa-lightbulb fa-3x"></i>
-							<h5 class="my-3">Concept Ideation</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-						<div class="col-md-4 col-10 text-center mt-md-0 mt-sm-2 mt-2">
-							<i class="far fa-handshake fa-3x"></i>
-							<h5 class="my-3">Partnership Development</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-						<div class="col-md-4 col-10 text-center mt-md-0 mt-sm-2 mt-2">
-							<i class="fas fa-chart-line fa-3x"></i>
-							<h5 class="my-3">Results Driven</h5>
-							<p class="small">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-						</div>
-					</div>
-					<div class="row justify-content-center">
-						<div class="col-md-3 mt-4">
-							<a href="{% url 'distributor' %}" class="btn btn-primary btn-block arch-btn-primary" role="button" aria-pressed="true">Learn More</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+{% include 'partials/_hp_services.html' %}
+{# Testimonials #}
+{% include 'partials/_hp_testimonial.html' %}
 {% endblock %}
