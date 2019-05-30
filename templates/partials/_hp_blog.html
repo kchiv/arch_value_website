@@ -5,22 +5,23 @@
 		background-image: linear-gradient(180deg, #B8B8B8 0%, #FFFFFF 100%);
 	}
 
-	.post-img {
+	.blog-img {
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
 	}
 
-	.post-row {
+	.blog-row {
 		height: 250px;
 	}
 
-	.card {
+	.blog-card {
 		box-shadow: 5px 2px 20px 0 rgba(0,0,0,0.20);
 	}
 
-	.card i {
+	.blog-card i {
 		font-size: 5px;
+		color: #b8b8b8;
 	}
 </style>
 
@@ -36,13 +37,13 @@
 			</div>
 		</div>
 		{% for post in posts %}
-			<div class="card my-4">
+			<div class="card blog-card my-4">
 			  <div class="row no-gutters">
-			    <div class="col-md-4 rounded post-img post-row" style="background-image: url({{ post.thumbnail_image.url  }});">
+			    <div class="col-md-4 rounded blog-img blog-row" style="background-image: url({{ post.thumbnail_image.url  }});">
 			    </div>
 			    <div class="col-md-8 d-flex align-items-center">
 			      <div class="card-body">
-			      	<span class="small arch-brand-color">{{ post.post_category.first }}</span><i class="fas fa-circle align-middle mx-2 text-muted"></i><span class="small text-muted">{{ post.publication_date | date:"M d, Y" }}</span>
+			      	<span class="small arch-brand-color">{{ post.post_category.first }}</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">{{ post.publication_date | date:"M d, Y" }}</span>
 			      	{% with header_length=post.header_title|length %}
 			        <h5 class="card-title">{{ post.header_title | slice:":110" }}{% if header_length > 110 %}...{% endif %}</h5>
 			        {% endwith %}
@@ -57,5 +58,10 @@
 			  </div>
 			</div>
 		{% endfor %}
+		<div class="row justify-content-center">
+			<div class="col-md-3 my-4">
+				<a href="{% url 'posts:index' %}" class="btn btn-primary btn-block arch-btn-primary" role="button" aria-pressed="true">See All</a>
+			</div>
+		</div>
 	</div>
 </div>
