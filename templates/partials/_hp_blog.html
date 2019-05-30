@@ -6,7 +6,6 @@
 	}
 
 	.post-img {
-		background-image: url({% static 'img/DSC_2859.jpg' %});
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
@@ -14,6 +13,10 @@
 
 	.post-row {
 		height: 250px;
+	}
+
+	.card {
+		box-shadow: 5px 2px 20px 0 rgba(0,0,0,0.20);
 	}
 
 	.card i {
@@ -29,41 +32,30 @@
 				<div class="row ml-0">
 					<div class="col-2 arch-underline"></div>
 				</div>
-				<p class="my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p class="mt-4 mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</div>
 		</div>
-		<div class="card my-4">
-		  <div class="row no-gutters">
-		    <div class="col-md-4 rounded post-img post-row">
-		      
-		    </div>
-		    <div class="col-md-8 d-flex align-items-center">
-		      <div class="card-body">
-		      	<span class="small arch-brand-color">Case Study</span><i class="fas fa-circle align-middle"></i><span class="small text-muted">May 9, 2019</span>
-		        <h5 class="card-title">Sed Vulputate Odio Ut Enim Blandit Volutpat Maecenas</h5>
-		        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-		        <div class="row">
-					<div class="col-6">
-						<a href="#" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Get In Touch</a>
+		{% for post in posts %}
+			<div class="card my-4">
+			  <div class="row no-gutters">
+			    <div class="col-md-4 rounded post-img post-row" style="background-image: url({{ post.thumbnail_image.url  }});">
+			    </div>
+			    <div class="col-md-8 d-flex align-items-center">
+			      <div class="card-body">
+			      	<span class="small arch-brand-color">{{ post.post_category.first }}</span><i class="fas fa-circle align-middle mx-2 text-muted"></i><span class="small text-muted">{{ post.publication_date | date:"M d, Y" }}</span>
+			      	{% with header_length=post.header_title|length %}
+			        <h5 class="card-title">{{ post.header_title | slice:":110" }}{% if header_length > 110 %}...{% endif %}</h5>
+			        {% endwith %}
+			        <p class="card-text">{{ post.post_content | striptags | slice:":150" }}...</p>
+			        <div class="row">
+						<div class="col-6">
+							<a href="{% url 'posts:post_detail' post.post_slug post.pk %}" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a>
+						</div>
 					</div>
-				</div>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<div class="card my-4">
-		  <div class="row no-gutters">
-		    <div class="col-md-4">
-		      <img src="{% static 'img/DSC_2859.jpg' %}" class="card-img" alt="...">
-		    </div>
-		    <div class="col-md-8">
-		      <div class="card-body">
-		        <h5 class="card-title">Card title</h5>
-		        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-		        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		{% endfor %}
 	</div>
 </div>
