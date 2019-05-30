@@ -19,7 +19,7 @@ class Page(models.Model):
 																					'.tiff'], blank=True, help_text='Image featured on page. Must be at least 1,000px X 1,000px')
 	show_cta = models.BooleanField(default=False, help_text='Check the box to show CTA.')
 	page_content = HTMLField('Content', blank=True)
-	page_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
+	page_slug = models.SlugField(max_length=255, blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 	custom_js = models.TextField(blank=True)
 	custom_css = models.TextField(blank=True)
 

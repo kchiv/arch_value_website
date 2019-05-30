@@ -10,7 +10,7 @@ from filebrowser.fields import FileBrowseField
 class Category(models.Model):
 	category_name = models.CharField(max_length=50, blank=False, unique=True)
 	is_published = models.BooleanField(default=True, help_text='Check the box to publish category.')
-	category_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
+	category_slug = models.SlugField(max_length=255, blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 	category_image = FileBrowseField('Category image', max_length=500, extensions=['.jpg', 
 														'.jpeg', 
 														'.gif', 
@@ -32,7 +32,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
 	tag_name = models.CharField(max_length=50, blank=False, unique=True, help_text='Tag should be short. 1 or 2 words and less than 50 characters.')
-	tag_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
+	tag_slug = models.SlugField(max_length=255, blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 
 	def save(self, *args, **kwargs):
 		if not self.tag_slug:
@@ -45,8 +45,8 @@ class Tag(models.Model):
 class Post(models.Model):
 	author = models.ForeignKey(settings.AUTH_USER_MODEL, models.SET_NULL, blank=True, null=True)
 	is_published = models.BooleanField(default=False, help_text='Check the box to publish post.')
-	meta_title = models.CharField(max_length=100, unique=True, blank=False, help_text='Title that shows up in Google search.')
-	header_title = models.CharField(max_length=100, unique=True, blank=True, help_text='Title that shows on page. Should typically match meta title.')
+	meta_title = models.CharField(max_length=200, unique=True, blank=False, help_text='Title that shows up in Google search.')
+	header_title = models.CharField(max_length=200, unique=True, blank=True, help_text='Title that shows on page. Should typically match meta title.')
 	meta_description = models.CharField(blank=True, max_length=250, help_text='Brief description that shows up in Google search. Approx. 160 characters.')
 	publication_date = models.DateTimeField(help_text='Original publication date.')
 	modification_date = models.DateTimeField(auto_now=True, help_text='Date the post was modified from original version.')
@@ -65,7 +65,7 @@ class Post(models.Model):
 	post_content = HTMLField('Content', blank=True)
 	post_category = models.ManyToManyField(Category, blank=True)
 	post_tag = models.ManyToManyField(Tag, blank=True)
-	post_slug = models.SlugField(blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
+	post_slug = models.SlugField(max_length=255, blank=True, unique=True, help_text='Text that shows in URL. Will automatically populate when object is saved.')
 	custom_js = models.TextField(blank=True)
 	custom_css = models.TextField(blank=True)
 
