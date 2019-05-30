@@ -4,6 +4,21 @@
 	.blog-section-bg {
 		background-image: linear-gradient(180deg, #B8B8B8 0%, #FFFFFF 100%);
 	}
+
+	.post-img {
+		background-image: url({% static 'img/DSC_2859.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.post-row {
+		height: 250px;
+	}
+
+	.card i {
+		font-size: 5px;
+	}
 </style>
 
 <div class="blog-section-bg">
@@ -19,14 +34,19 @@
 		</div>
 		<div class="card my-4">
 		  <div class="row no-gutters">
-		    <div class="col-md-4">
-		      <img src="{% static 'img/DSC_2859.jpg' %}" class="card-img" alt="...">
+		    <div class="col-md-4 rounded post-img post-row">
+		      
 		    </div>
-		    <div class="col-md-8">
+		    <div class="col-md-8 d-flex align-items-center">
 		      <div class="card-body">
-		        <h5 class="card-title">Card title</h5>
+		      	<span class="small arch-brand-color">Case Study</span><i class="fas fa-circle align-middle"></i><span class="small text-muted">May 9, 2019</span>
+		        <h5 class="card-title">Sed Vulputate Odio Ut Enim Blandit Volutpat Maecenas</h5>
 		        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-		        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+		        <div class="row">
+					<div class="col-6">
+						<a href="#" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Get In Touch</a>
+					</div>
+				</div>
 		      </div>
 		    </div>
 		  </div>
