@@ -1,12 +1,49 @@
+{% load static %}
+
 <style type="text/css">
-	.blog-test {
+	.blog-section-bg {
 		background-image: linear-gradient(180deg, #B8B8B8 0%, #FFFFFF 100%);
 	}
 </style>
 
-<div class="container-fluid blog-test">
-	<div class="row">
-		<div class="col-12">
+<div class="blog-section-bg">
+	<div class="container">
+		<div class="row pt-5">
+			<div class="col-lg-8 col-md-10 col-12">
+				<h4>Proven Results For Our Clients</h4>
+				<div class="row ml-0">
+					<div class="col-2 arch-underline"></div>
+				</div>
+				<p class="my-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			</div>
+		</div>
+		<div class="card my-4">
+		  <div class="row no-gutters">
+		    <div class="col-md-4">
+		      <img src="{% static 'img/DSC_2859.jpg' %}" class="card-img" alt="...">
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">Card title</h5>
+		        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+		        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="card my-4">
+		  <div class="row no-gutters">
+		    <div class="col-md-4">
+		      <img src="{% static 'img/DSC_2859.jpg' %}" class="card-img" alt="...">
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">Card title</h5>
+		        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+		        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+		      </div>
+		    </div>
+		  </div>
 		</div>
 	</div>
 </div>
