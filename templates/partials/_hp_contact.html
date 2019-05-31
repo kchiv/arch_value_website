@@ -6,7 +6,7 @@
 
 <div class="contact-section-bg">
 	<div class="container">
-		<div class="row justify-content-center py-5">
+		<div class="row justify-content-center pt-5">
 			<div class="col-md-6">
 				<h4 class="text-center">Get In Touch</h4>
 				<div class="row justify-content-center">
@@ -15,41 +15,48 @@
 				<p class="text-center pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form">
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-8 col-12 py-3">
+				<form method="post" action="/contact#contact_form">
 				{% csrf_token %}
 		          <div class="form-group">
-		            <select class="form-control" name="contact[reason]" required="required">
-		              <option value="" disabled="" selected="">Select Reason</option>
-		              <option>Order Status</option>
-		              <option>Place Order</option>
-		              <option>Return</option>
-		              <option>Product Information</option>
-		              <option>Company Information</option>
-		              <option>Feedback</option>
-		              <option>Mailing Lists</option>
+		            <select class="form-control" name="user_type" required="required">
+		              <option value="" disabled="" selected="">Tell us who you are</option>
+		              <option>OEM</option>
+		              <option>Distributor</option>
 		              <option>Other</option>
 		            </select>
 		          </div>
 		          <div class="form-group">
-		            <input type="name" name="contact[name]" class="form-control" placeholder="Name" required="required">
+		            <input type="name" name="user_name" class="form-control" placeholder="Name" required="required">
 		          </div>
 		          <div class="form-group">
-		            <input type="email" name="contact[email]" class="form-control" placeholder="Email" required="required">
+		            <input type="email" name="user_email" class="form-control" placeholder="Email" required="required">
 		          </div>
 		          <div class="form-group">
-		            <input type="order" name="contact[order]" class="form-control" placeholder="Order Number (Optional)">
+		            <input type="tel" name="user_phone" class="form-control" placeholder="Phone Number (Optional)">
 		          </div>
 		          <div class="form-group">
-		            <input type="subject" name="contact[subject]" class="form-control" placeholder="Subject" required="required">
+		            <input type="subject" name="user_company" class="form-control" placeholder="Company Name (Optional)">
 		          </div>
 		          <div class="form-group">
-		            <textarea class="form-control" rows="5" placeholder="Message" name="contact[message]" required="required"></textarea>
+		            <textarea class="form-control" rows="5" placeholder="Message" name="user_message" required="required"></textarea>
 		          </div>
 		          <div class="form-group">
-		            <input type="submit" class="btn btn-primary tb-button" value="Submit">
-		          </div>
+			          <div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+						<label class="form-check-label small text-muted" for="defaultCheck1">
+						I would like to subscribe to the Arch Value mailing list
+						</label>
+					  </div>
+				  </div>
+				  <div class="row justify-content-center">
+				  	<div class="col-md-6">
+			          <div class="form-group">
+			            <input type="submit" class="btn btn-primary btn-block arch-btn-primary" value="Submit">
+			          </div>
+			        </div>
+			      </div>
 		        </form>
 			</div>
 		</div>
