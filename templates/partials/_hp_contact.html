@@ -18,6 +18,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form">
+				{% csrf_token %}
 		          <div class="form-group">
 		            <select class="form-control" name="contact[reason]" required="required">
 		              <option value="" disabled="" selected="">Select Reason</option>
