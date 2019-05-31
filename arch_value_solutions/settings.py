@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'events.apps.EventsConfig',
     'partners.apps.PartnersConfig',
     'posts.apps.PostsConfig',
-    'pages.apps.PagesConfig'
+    'pages.apps.PagesConfig',
+    'contacts.apps.ContactsConfig'
 ]
 
 MIDDLEWARE = [
