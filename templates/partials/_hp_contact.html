@@ -6,12 +6,50 @@
 
 <div class="contact-section-bg">
 	<div class="container">
-		<div class="row justify-content-center pt-5">
+		<div class="row justify-content-center py-5">
 			<div class="col-md-6">
 				<h4 class="text-center">Get In Touch</h4>
 				<div class="row justify-content-center">
 					<div class="col-2 arch-underline"></div>
 				</div>
+				<p class="text-center pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form">
+		          <div class="form-group">
+		            <select class="form-control" name="contact[reason]" required="required">
+		              <option value="" disabled="" selected="">Select Reason</option>
+		              <option>Order Status</option>
+		              <option>Place Order</option>
+		              <option>Return</option>
+		              <option>Product Information</option>
+		              <option>Company Information</option>
+		              <option>Feedback</option>
+		              <option>Mailing Lists</option>
+		              <option>Other</option>
+		            </select>
+		          </div>
+		          <div class="form-group">
+		            <input type="name" name="contact[name]" class="form-control" placeholder="Name" required="required">
+		          </div>
+		          <div class="form-group">
+		            <input type="email" name="contact[email]" class="form-control" placeholder="Email" required="required">
+		          </div>
+		          <div class="form-group">
+		            <input type="order" name="contact[order]" class="form-control" placeholder="Order Number (Optional)">
+		          </div>
+		          <div class="form-group">
+		            <input type="subject" name="contact[subject]" class="form-control" placeholder="Subject" required="required">
+		          </div>
+		          <div class="form-group">
+		            <textarea class="form-control" rows="5" placeholder="Message" name="contact[message]" required="required"></textarea>
+		          </div>
+		          <div class="form-group">
+		            <input type="submit" class="btn btn-primary tb-button" value="Submit">
+		          </div>
+		        </form>
 			</div>
 		</div>
 	</div>
