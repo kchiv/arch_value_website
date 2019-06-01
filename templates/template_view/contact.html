@@ -1,9 +1,106 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Contact Us{{ block.super }}{% endblock %}
 
 {% block description %}Need Description{% endblock %}
 
+{% block inline_css %}
+<style type="text/css">
+	.page-hero-bg {
+		background: linear-gradient(135deg, #E75C00c4 0%, #E89000c4 100%), url({% static 'img/DSC_2859.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		color: #fff;
+	}
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+$( document ).ready(function() {
+	// form validation
+	$("form").submit(function(event) {
+ 
+		var userName = $("#userName").val().length;
+		var userEmail = $("#userEmail").val().length;
+		var userNumber = $("#userNumber").val().length;
+		var userCompany = $("#userCompany").val().length;
+		var userMessage = $("#userMessage").val().length;
+		
+		if (userName > 50) {
+			event.preventDefault()
+			$( '.user-name-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your name must be less than 50 characters long.</div>' );
+		}
+
+		if (userEmail > 200) {
+			event.preventDefault()
+			$( '.user-email-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your email must be less than 200 characters long.</div>' );
+		}
+
+		if (userNumber > 50) {
+			event.preventDefault()
+			$( '.user-number-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your phone number must be less than 50 characters long.</div>' );
+		}
+
+		if (userCompany > 100) {
+			event.preventDefault()
+			$( '.user-company-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your company name must be less than 100 characters long.</div>' );
+		}
+
+		if (userMessage > 1000) {
+			event.preventDefault()
+			$( '.user-message-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your message must be less than 1,000 characters long.</div>' );
+		}
+	});
+ 
+});
+</script>
+{% endblock %}
+
 {% block content %}
-<h1>Contact Us</h1>
+<div class="page-hero-bg">
+	<div class="container-fluid">
+		<div class="row justify-content-center py-5">
+			<h1 class="py-3">Contact Us</h1>
+		</div>
+	</div>
+</div>
+<div class="bg-white">
+	<div class="container">
+		<div class="row pt-5">
+			<!-- left column -->
+			<div class="col-lg-4 col-md-5 col-12">
+				<h4>Get In Touch</h4>
+				<div class="row ml-0 pb-4">
+					<div class="col-2 arch-underline"></div>
+				</div>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				<p>Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+				<div class="my-4">
+					<div class="d-inline-block mr-2">
+						<i class="fas fa-phone"></i>
+					</div>
+					<div class="d-inline-block">
+						<span>(222) 222-2222</span>
+					</div>
+				</div>
+				<div class="my-4">
+					<div class="d-inline-block align-top mr-2">
+						<i class="fas fa-map-marker-alt"></i>
+					</div>
+					<div class="d-inline-block">
+						<span>222 JD Drive<br>San Francisco, CA</span>
+					</div>
+				</div>
+			</div>
+			<!-- right column -->
+			<div class="col-lg-7 offset-lg-1 col-md-7 col-12 pt-2 pb-5">
+				{% include 'partials/_contact_form.html' %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
