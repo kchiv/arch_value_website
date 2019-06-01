@@ -32,6 +32,7 @@ urlpatterns = [
     path('partners-api/', include('partners.urls')),
     path('blog/', include('posts.urls')),
     path('pages/', include('pages.urls')),
+    path('contacts/', include('contacts.urls')),
 ]
 
 if settings.DEBUG:
