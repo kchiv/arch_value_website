@@ -3,7 +3,7 @@ from .models import Contact
 
 # Create your views here.
 
-def hp_contact_form(request):
+def contact_form(request):
 	if request.method == 'POST':
 		user_type = request.POST['user_type']
 		name = request.POST['user_name']
@@ -11,7 +11,7 @@ def hp_contact_form(request):
 		phone_number = request.POST['user_phone']
 		company_name = request.POST['user_company']
 		message = request.POST['user_message']
-		
+
 		if 'user_subscribe' in request.POST:
 			subscriber = True
 		else:

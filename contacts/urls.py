@@ -5,5 +5,5 @@ from . import views
 app_name = 'contacts'
 
 urlpatterns = [
-	path('hp-contact/', views.hp_contact_form, name='hp_contact')
+	path('contact-form/', views.contact_form, name='contact_form')
 ]
