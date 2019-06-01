@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}{{ page.meta_title }}{{ block.super }}{% endblock %}
 
 {% block description %}{{ page.meta_description }}{% endblock %}
 
 {% block inline_css %}
 	<style>
+		.page-hero-bg {
+			background: linear-gradient(135deg, #E75C00c4 0%, #E89000c4 100%), url({% if page.featured_image.url %}'{{ page.featured_image.url }}'{% else %}{% static 'img/DSC_2859.jpg' %}{% endif %});
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+			color: #fff;
+		}
+
 		{{ page.custom_css }}
 	</style>
 {% endblock %}
@@ -17,5 +27,14 @@
 {% endblock %}
 
 {% block content %}
-	{{ page.page_content }}
+<div class="page-hero-bg">
+	<div class="container-fluid">
+		<div class="row justify-content-center py-5">
+			<h1 class="py-3">{{ page.header_title }}</h1>
+		</div>
+	</div>
+</div>
+
+{{ page.page_content }}
+
 {% endblock %}
