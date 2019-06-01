@@ -60,7 +60,8 @@
 	}
 
 	/** Footer Navigation **/
-	.footer-header {
+	.footer-header,
+	.footer-copyright {
 		color: rgba(255,255,255,.75);
 	}
 
