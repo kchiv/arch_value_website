@@ -161,12 +161,19 @@
 		font-size: 5px;
 		color: #b8b8b8;
 	}
+
+
+	{# Contact Section CSS #}
+	.contact-section-bg {
+		background-color: #fff;
+	}
 </style>
 {% endblock %}
 
 {% block script %}
 <script>
 $( document ).ready(function() {
+	// form validation
 	$("form").submit(function(event) {
  
 		var userName = $("#userName").val().length;
@@ -199,6 +206,19 @@ $( document ).ready(function() {
 			event.preventDefault()
 			$( '.user-message-prep' ).prepend( '<div class="alert alert-danger" role="alert">Your message must be less than 1,000 characters long.</div>' );
 		}
+	});
+
+	// Smooth scrolling contact anchor
+	$('a[href*="#contact"]').on('click', function(e) {
+	  e.preventDefault()
+
+	  $('html, body').animate(
+	    {
+	      scrollTop: $($(this).attr('href')).offset().top,
+	    },
+	    1300,
+	    'linear'
+	  )
 	});
  
 });
