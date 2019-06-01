@@ -37,6 +37,6 @@
       </li>
     </ul>
     {% url 'home' as home_url %}
-    <a href="{% if request.get_full_path == home_url %}#contact{% else %}{% url 'contact' %}{% endif %}" class="btn btn-outline-primary arch-btn-outline-primary my-md-auto my-3" role="button" aria-pressed="true">Contact Us</a>
+    <a href="{% url 'contact' %}" class="btn btn-outline-primary arch-btn-outline-primary my-md-auto my-3" role="button" aria-pressed="true">Contact Us</a>
   </div>
 </nav>
