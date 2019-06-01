@@ -164,6 +164,27 @@
 </style>
 {% endblock %}
 
+{% block script %}
+<script>
+$( document ).ready(function() {
+	$("form").submit(function(event) {
+ 
+		var userName = $("#userName").val().length;
+		var userEmail = $("#userEmail").val().length;
+		var userNumber = $("#userNumber").val().length;
+		var userCompany = $("#userCompany").val().length;
+		var userMessage = $("#userMessage").val().length;
+		
+		if (userName > 50) {
+			event.preventDefault()
+			alert('Too long!')
+		}
+	});
+ 
+});
+</script>
+{% endblock %}
+
 {% block content %}
 {# Hero #}
 {% include 'partials/_hp_hero.html' %}
