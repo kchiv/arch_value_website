@@ -17,7 +17,7 @@
 		</div>
 		<div class="row justify-content-center">
 			<div class="col-lg-7 col-md-8 col-12 py-3">
-				<form method="post" action="{% url 'contacts:hp_contact' %}">
+				<form method="post" id="form" action="{% url 'contacts:hp_contact' %}">
 				{% csrf_token %}
 		          <div class="form-group">
 		            <select class="form-control" name="user_type" required="required">
@@ -28,19 +28,19 @@
 		            </select>
 		          </div>
 		          <div class="form-group">
-		            <input type="name" name="user_name" class="form-control" placeholder="Name" required="required">
+		            <input type="name" id="userName" name="user_name" class="form-control" placeholder="Name" required="required">
 		          </div>
 		          <div class="form-group">
-		            <input type="email" name="user_email" class="form-control" placeholder="Email" required="required">
+		            <input type="email" id="userEmail" name="user_email" class="form-control" placeholder="Email" required="required">
 		          </div>
 		          <div class="form-group">
-		            <input type="tel" name="user_phone" class="form-control" placeholder="Phone Number (Optional)">
+		            <input type="tel" id="userNumber" name="user_phone" class="form-control" placeholder="Phone Number (Optional)">
 		          </div>
 		          <div class="form-group">
-		            <input type="subject" name="user_company" class="form-control" placeholder="Company Name (Optional)">
+		            <input name="user_company" id="userCompany" class="form-control" placeholder="Company Name (Optional)">
 		          </div>
 		          <div class="form-group">
-		            <textarea class="form-control" rows="5" placeholder="Message" name="user_message" required="required"></textarea>
+		            <textarea id="userMessage" class="form-control" rows="5" placeholder="Message" name="user_message" required="required"></textarea>
 		          </div>
 		          <div class="form-group">
 			          <div class="form-check">
