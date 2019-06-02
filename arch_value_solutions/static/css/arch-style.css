@@ -1,15 +1,29 @@
 /*** Global Styles ***/
 
-	/** Font Style **/
+	/** Font **/
 
-	body {
-		font-family: 'Roboto', sans-serif;
-	}
+		/* Font Style */
+		body {
+			font-family: 'Roboto', sans-serif;
+		}
+
+		/* Font Color */
+		h1, h2, h3, h4, h5, p {
+			color: #3a3a3a;
+		}
+
+		.arch-orange {
+			color: #ff6601;
+		}
 
 	/** Background Style **/
 
 	body {
 		background-color: #3a3a3a;
+	}
+
+	.arch-gray-bg {
+		background-color: #d8d8d8;
 	}
 
 	/** Line Accents **/
