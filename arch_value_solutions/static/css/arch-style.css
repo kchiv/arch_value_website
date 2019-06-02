@@ -17,7 +17,6 @@
 		}
 
 	/** Background Style **/
-
 	body {
 		background-color: #3a3a3a;
 	}
@@ -133,4 +132,26 @@
 			color: #fff;
 			background-color: #ff6601;
 			border-color: #ff6601;
+		}
+
+	/** Blog **/
+
+		/* Blog Card */
+		.blog-img {
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		}
+
+		.blog-row {
+			height: 250px;
+		}
+
+		.blog-card {
+			box-shadow: 5px 2px 20px 0 rgba(0,0,0,0.20);
+		}
+
+		.blog-card i {
+			font-size: 5px;
+			color: #b8b8b8;
 		}

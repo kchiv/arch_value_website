@@ -17,7 +17,7 @@
 			    </div>
 			    <div class="col-md-8 d-flex align-items-center">
 			      <div class="card-body">
-			      	<span class="small arch-brand-color">{{ post.post_category.first }}</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">{{ post.publication_date | date:"M d, Y" }}</span>
+			      	<span class="small arch-orange">{{ post.post_category.first }}</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">{{ post.publication_date | date:"M d, Y" }}</span>
 			      	{% with header_length=post.header_title|length %}
 			        <h5 class="card-title">{{ post.header_title | slice:":110" }}{% if header_length > 110 %}...{% endif %}</h5>
 			        {% endwith %}
