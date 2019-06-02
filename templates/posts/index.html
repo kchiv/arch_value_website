@@ -1,19 +1,41 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Blog{{ block.super }}{% endblock %}
 
 {% block description %}Needs description{% endblock %}
 
 {% block inline_css %}
-	<style>
-		
-	</style>
+<style type="text/css">
+	.blog-hp-hero-bg {
+		background: linear-gradient(135deg, #E75C00c4 0%, #E89000c4 100%), url({% static 'img/DSC_2859.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		color: #fff;
+	}
+</style>
 {% endblock %}
 
 {% block script %}
-	<script>
-		
-	</script>
+<script>
+
+$(document).ready(function(){
+	console.log('working');
+
+	$.ajax({
+		url: '/blog/api/list-post/',
+		method: 'GET',
+		success: function(data){
+			$.each(data, function(key, value){
+				var
+			})
+		}
+	})
+});
+	
+</script>
 {% endblock %}
 
 {% block social_data %}{% endblock %}
@@ -21,5 +43,24 @@
 {% block schema_data %}{% endblock %}
 
 {% block content %}
-	<h1>Testing Blog</h1>
+<div class="blog-hp-hero-bg">
+	<div class="container">
+		<div class="row py-5">
+			<div class="col-lg-6 col-md-8">
+				<h1 class="text-white pt-5">Arch Value Blog &amp; Resources</h1>
+				<p class="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<ul class="list-inline">
+						<li class="list-inline-item">All</li>
+					{% for category in categories %}
+						<li class="list-inline-item">{{ category.category_name }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
