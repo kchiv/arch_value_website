@@ -37,4 +37,7 @@
 
 {{ page.page_content|safe }}
 
+{% if page.show_cta == True %}
+	{% include 'partials/_cta_footer.html' %}
+{% endif %}
 {% endblock %}
