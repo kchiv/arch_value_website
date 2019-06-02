@@ -12,7 +12,7 @@ class Event(models.Model):
 	event_start = models.DateField(default=date.today)
 	event_end = models.DateField(default=date.today)
 	event_description = models.TextField(blank=True, help_text='Brief description of event.')
-	event_country = CountryField(blank=True, null=True)
+	event_country = CountryField(blank=True, null=True, default='US')
 	event_street = models.CharField(max_length=200, blank=True)
 	event_city = models.CharField(max_length=100, blank=True)
 	event_state = USStateField(null=True, blank=True, verbose_name='Event state (US only)')
