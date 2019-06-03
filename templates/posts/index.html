@@ -30,12 +30,20 @@ $(document).ready(function(){
 		success: function(data){
 			var data = data['results']
 			$.each(data, function(key, value){
-				var postTitle = value.header_title
-				var postPubDate = value.publication_date
+				var postTitle = value.post_title
+				var postPubDate = value.pub_date
 				var postContent = value.strip_content
+				var postCategory = value.post_category[0].category_name
+				var postFeatImg = value.feat_img
+				var postThumbImg = value.thumb_img
+				var postUrl = value.post_url
 				console.log(postTitle);
 				console.log(postPubDate);
 				console.log(postContent);
+				console.log(postCategory);
+				console.log(postFeatImg);
+				console.log(postThumbImg);
+				console.log(postUrl);
 			})
 		}
 	})
