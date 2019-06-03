@@ -34,7 +34,7 @@ def post_detail(request, post_slug, post_id):
 	return render(request, 'posts/post_page.html', context)
 
 class ListPostView(generics.ListAPIView):
-	queryset = Post.objects.all().order_by('-publication_date')
+	queryset = Post.objects.filter(is_published=True).order_by('-publication_date')
 	serializer_class = PostSerializer
 
 class CategoryPostListView(generics.ListAPIView):
