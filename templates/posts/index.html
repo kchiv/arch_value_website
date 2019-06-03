@@ -28,8 +28,14 @@ $(document).ready(function(){
 		url: '/blog/api/list-post/',
 		method: 'GET',
 		success: function(data){
+			var data = data['results']
 			$.each(data, function(key, value){
-				var
+				var postTitle = value.header_title
+				var postPubDate = value.publication_date
+				var postContent = value.strip_content
+				console.log(postTitle);
+				console.log(postPubDate);
+				console.log(postContent);
 			})
 		}
 	})
