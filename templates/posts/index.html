@@ -15,6 +15,10 @@
 		background-position: center;
 		color: #fff;
 	}
+
+	.light-gray-arch-bg {
+		background-color: #f7f7f7;
+	}
 </style>
 {% endblock %}
 
@@ -22,14 +26,15 @@
 <script>
 
 $(document).ready(function(){
-	console.log('working');
 
-	$.ajax({
-		url: '/blog/api/list-post/',
-		method: 'GET',
-		success: function(data){
-			var data = data['results']
-			$.each(data, function(key, value){
+	var postList = [];
+
+	function parsePosts(){
+		if (postList == 0){
+			$('#featured-post').append('<h3 class="text-center py-5">Currently there aren\'t any posts available.</h3>')
+		} else {
+			var index = 0;
+			$.each(postList, function(key, value){
 				var postTitle = value.post_title
 				var postPubDate = value.pub_date
 				var postContent = value.strip_content
@@ -37,14 +42,26 @@ $(document).ready(function(){
 				var postFeatImg = value.feat_img
 				var postThumbImg = value.thumb_img
 				var postUrl = value.post_url
-				console.log(postTitle);
-				console.log(postPubDate);
-				console.log(postContent);
-				console.log(postCategory);
-				console.log(postFeatImg);
-				console.log(postThumbImg);
-				console.log(postUrl);
+				index += 1
+				if (index === 1) {
+					$('#featured-post').append(
+					'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(' + postThumbImg + ');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postTitle + '</h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
+					)
+				} else {
+					console.log('tester')
+				}
+
 			})
+
+		}
+	}
+
+	$.ajax({
+		url: '/blog/api/list-post/',
+		method: 'GET',
+		success: function(data){
+			postList = data['results']
+			parsePosts()
 		}
 	})
 });
@@ -73,6 +90,15 @@ $(document).ready(function(){
 						<li class="list-inline-item">{{ category.category_name }}</li>
 					{% endfor %}
 				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="light-gray-arch-bg">
+	<div class="container">
+		<div class="row">
+			<div id="featured-post" class="col-12">
+				
 			</div>
 		</div>
 	</div>
