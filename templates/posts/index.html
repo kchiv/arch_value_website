@@ -19,6 +19,29 @@
 	.light-gray-arch-bg {
 		background-color: #f7f7f7;
 	}
+
+	.pag-custom {
+		box-shadow: 5px 2px 20px 0 rgba(0,0,0,0.20);
+	}
+
+	.pag-custom a {
+		color: #919191;
+	}
+
+	.pag-custom a:hover {
+		background-color: #f7f7f7;
+		color: #3a3a3a;
+	}
+
+	.pag-custom a:focus {
+		box-shadow: none;
+	}
+
+	.pag-custom a.active {
+		background-color: #f7f7f7;
+		color: #3a3a3a;
+	}
+
 </style>
 {% endblock %}
 
@@ -113,6 +136,17 @@ $(document).ready(function(){
 			</div>
 		</div>
 		<div class="row" id="general-post">
+		</div>
+		<div class="row justify-content-center">
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination pag-custom pb-0">
+			    <li class="page-item"><a class="page-link active" href="#"><i class="fas fa-angle-left"></i></a></li>
+			    <li class="page-item"><a class="page-link" href="#">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+			  </ul>
+			</nav>
 		</div>
 	</div>
 </div>
