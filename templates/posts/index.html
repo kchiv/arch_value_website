@@ -185,17 +185,47 @@ $(document).ready(function(){
 					prevPostUrl = undefined
 				}
 
-				if (prevNumberOffsetOne > 0) {
-					prevOffsetOnePostUrl = fetchUrl + '?page=' + prevNumberOffsetOne
+				var allUrl = '/blog/api/list-post/'
+				var catUrl = '/blog/api/' + cat + '/'
+
+				// checks which API is being called and connects to correct path
+				if (fetchUrl.includes('list-post')){
+					if (prevNumberOffsetOne > 0) {
+						prevOffsetOnePostUrl = allUrl + '?page=' + prevNumberOffsetOne
+					} else {
+						prevOffsetOnePostUrl = undefined
+					}
+
+					if (nextNumberOffsetOne <= totalPages) {
+						nextOffsetOnePostUrl = allUrl + '?page=' + nextNumberOffsetOne
+					} else {
+						nextOffsetOnePostUrl = undefined
+					}
 				} else {
-					prevOffsetOnePostUrl = undefined
+					if (prevNumberOffsetOne > 0) {
+						prevOffsetOnePostUrl = catUrl + '?page=' + prevNumberOffsetOne
+					} else {
+						prevOffsetOnePostUrl = undefined
+					}
+
+					if (nextNumberOffsetOne <= totalPages) {
+						nextOffsetOnePostUrl = catUrl + '?page=' + nextNumberOffsetOne
+					} else {
+						nextOffsetOnePostUrl = undefined
+					}
 				}
 
-				if (nextNumberOffsetOne <= totalPages) {
-					nextOffsetOnePostUrl = fetchUrl + '?page=' + nextNumberOffsetOne
-				} else {
-					nextOffsetOnePostUrl = undefined
-				}
+				// if (prevNumberOffsetOne > 0) {
+				// 	prevOffsetOnePostUrl = fetchUrl + '?page=' + prevNumberOffsetOne
+				// } else {
+				// 	prevOffsetOnePostUrl = undefined
+				// }
+
+				// if (nextNumberOffsetOne <= totalPages) {
+				// 	nextOffsetOnePostUrl = fetchUrl + '?page=' + nextNumberOffsetOne
+				// } else {
+				// 	nextOffsetOnePostUrl = undefined
+				// }
 				
 				parsePosts()
 				// checks number of pages
@@ -299,11 +329,7 @@ $(document).ready(function(){
 		<div class="row justify-content-center">
 			<nav aria-label="Page navigation example">
 			  <ul class="pagination pag-custom pb-0" id="pagination-list">
-<!-- 			    <li class="page-item"><a class="page-link active" href="#"><i class="fas fa-angle-left"></i></a></li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li> -->
+			  	<!-- jquery appends pagination -->
 			  </ul>
 			</nav>
 		</div>
