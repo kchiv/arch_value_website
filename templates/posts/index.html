@@ -48,6 +48,33 @@
 		background-color: transparent !important;
 	}
 
+	.cat-nav .navbar-toggler {
+		border: 0px;
+		color: #fff;
+	}
+
+	.cat-nav .navbar-toggler:hover,
+	.cat-nav .navbar-toggler:focus {
+		color: #fff;
+	}
+
+	.cat-nav .navbar-toggler i {
+		color: #b8b8b8;
+	}
+
+	.cat-nav .navbar-nav .nav-link {
+		color: #fff;
+		font-weight: 500;
+	}
+
+	.cat-nav .navbar-nav .nav-link:hover {
+		color: #b8b8b8;
+	}
+
+	.cat-nav .navbar-nav .nav-link.active {
+		color: #d1d1d1;
+	}
+
 </style>
 {% endblock %}
 
@@ -283,6 +310,16 @@ $(document).ready(function(){
 		$('#categoryH1').empty()
 		$('#categoryH1').append('<div class="col-12 mt-4"><h3 class="text-muted">' + catName + '</h3><div class="row ml-0"><div class="col-lg-1 col-md-2 col-3 arch-underline"></div></div></div>')
 	})
+
+	// add active class to category nav links on click
+	$(document).on('click', '.cat-nav.nav-link', function() {
+		$(this).parent().find('.cat-nav.nav-link.active').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$(document).on('click', '.cat-nav .navbar-toggler', function() {
+		$('#flipOver').toggleClass('fa-rotate-180');
+	});
 });
 	
 </script>
@@ -314,13 +351,13 @@ $(document).ready(function(){
 		</div>
 		{% endcomment %}
 		<nav class="navbar navbar-expand-lg navbar-light bg-light cat-nav">
-		  <a class="navbar-brand navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" href="#">Categories</a>
+		  <a class="navbar-brand navbar-toggler pl-0" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" href="#">Categories <i class="fas fa-angle-down" id="flipOver"></i></a>
 		  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button> -->
 		  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		    <div class="navbar-nav">
-		    	<a class="nav-item nav-link active" id="allPosts" href="#">All <span class="sr-only">(current)</span></a>
+		    	<a class="nav-item nav-link active" id="allPosts" href="#">All</a>
 		    	{% for category in categories %}
 		    		<a class="nav-item nav-link" id="categoryName" name="{{ category.category_slug }}" href="#">{{ category.category_name }}</a>
 		    	{% endfor %}
