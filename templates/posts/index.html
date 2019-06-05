@@ -40,6 +40,8 @@
 	.pag-custom a.active {
 		background-color: #f7f7f7;
 		color: #3a3a3a;
+		pointer-events: none;
+  		cursor: default;
 	}
 
 </style>
@@ -48,15 +50,23 @@
 {% block script %}
 <script>
 
+const urlParams = new URLSearchParams(window.location.search);
+
 $(document).ready(function(){
 
+	const myParam = urlParams.get('page');
 	var postList = [];
+	var nextPostUrl;
+	var prevPostUrl;
+	var nextOffsetOnePostUrl;
+	var prevOffsetOnePostUrl;
 
 	function parsePosts(){
 		if (postList == 0){
 			$('#featured-post').append('<h3 class="text-center py-5">Currently there aren\'t any posts available.</h3>')
 		} else {
 			var index = 0;
+			$('#general-post').empty()
 			$.each(postList, function(key, value){
 				var postTitle = value.post_title
 				var postShortTitle = value.shorter_title
@@ -69,7 +79,7 @@ $(document).ready(function(){
 				var postUrl = value.post_url
 				index += 1
 				if (index == 1) {
-					$('#featured-post').append(
+					$('#featured-post').html(
 						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(' + postThumbImg + ');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postTitle + '</h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
 					).hide().fadeIn(500);
 				} else {
@@ -83,12 +93,144 @@ $(document).ready(function(){
 		}
 	}
 
-	$.ajax({
-		url: '/blog/api/list-post/',
-		method: 'GET',
-		success: function(data){
-			postList = data['results']
-			parsePosts()
+	function buildPagination(){
+		// if previous page exists append previous arrow element
+		var pagLinks = '';
+
+		console.log(prevPostUrl)
+		console.log(nextPostUrl)
+
+		if (prevPostUrl) {
+			pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
+		}
+
+		if (prevPostUrl && !nextPostUrl){
+			var prevOffsetOne = prevNumber - 1;
+			if (prevOffsetOne > 0){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+			}
+		}
+
+		if (prevPostUrl && nextPostUrl){
+			var prevOffsetOne = prevNumber - 1;
+			var nextOffsetOne = nextNumber + 1;
+			if (prevOffsetOne > 0 && nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'	
+			} else if (prevOffsetOne <= 0 && nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+			} else if (prevOffsetOne > 0 && nextOffsetOne >= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			}
+		}
+
+		if (!prevPostUrl && nextPostUrl){
+			var nextOffsetOne = nextNumber + 1;
+			if (nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			}	
+		}
+
+		// if next page exists append next arrow element
+		if (nextPostUrl) {
+			pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li>'
+		}
+
+		console.log(pagLinks)
+
+		$('#pagination-list').html(pagLinks)
+	}
+
+	function fetchPosts(url){
+		console.log('fetching...')
+		var fetchUrl;
+		if (!url) {
+			fetchUrl = '/blog/api/list-post/'
+		} else {
+			fetchUrl = url
+		}
+		$.ajax({
+			url: fetchUrl,
+			method: 'GET',
+			success: function(data){
+				currentUrl = fetchUrl
+				currentIndex = data['prev_page_num'] + 1
+				prevNumber = data['prev_page_num']
+				prevNumberOffsetOne = prevNumber - 1
+				nextNumber = data['nex_page_num']
+				nextNumberOffsetOne = nextNumber + 1
+				totalPages = data['total_pages']
+				postList = data['results']
+				if (data.next){
+					nextPostUrl = data.next
+				} else {
+					nextPostUrl = undefined
+				}
+				if (data.previous){
+					prevPostUrl = data.previous
+				} else {
+					prevPostUrl = undefined
+				}
+
+				if (prevNumberOffsetOne > 0) {
+					prevOffsetOnePostUrl = '/blog/api/list-post/?page=' + prevNumberOffsetOne
+				} else {
+					prevOffsetOnePostUrl = undefined
+				}
+
+				if (nextNumberOffsetOne <= totalPages) {
+					nextOffsetOnePostUrl = '/blog/api/list-post/?page=' + nextNumberOffsetOne
+				} else {
+					nextOffsetOnePostUrl = undefined
+				}
+				
+				parsePosts()
+				// checks number of pages
+				if (totalPages > 1){
+					buildPagination()
+				}
+			},
+			error: function(data){
+				console.log('error')
+				console.log(data)
+			}
+		})
+	}
+
+	fetchPosts();
+
+	$(document).on('click', '#pagePrevious', function(event){
+		event.preventDefault()
+		console.log('tester')
+		if (prevPostUrl){
+			fetchPosts(prevPostUrl)
+		}
+	})
+
+	$(document).on('click', '#pageNext', function(event){
+		event.preventDefault()
+		console.log('tester')
+		if (nextPostUrl){
+			fetchPosts(nextPostUrl)
+		}
+	})
+
+	$(document).on('click', '#nextOffsetOne', function(event){
+		event.preventDefault()
+		console.log('tester')
+		if (nextOffsetOnePostUrl){
+			fetchPosts(nextOffsetOnePostUrl)
+		}
+	})
+
+	$(document).on('click', '#previousOffsetOne', function(event){
+		event.preventDefault()
+		console.log('tester')
+		if (prevOffsetOnePostUrl){
+			fetchPosts(prevOffsetOnePostUrl)
 		}
 	})
 });
@@ -139,12 +281,12 @@ $(document).ready(function(){
 		</div>
 		<div class="row justify-content-center">
 			<nav aria-label="Page navigation example">
-			  <ul class="pagination pag-custom pb-0">
-			    <li class="page-item"><a class="page-link active" href="#"><i class="fas fa-angle-left"></i></a></li>
+			  <ul class="pagination pag-custom pb-0" id="pagination-list">
+<!-- 			    <li class="page-item"><a class="page-link active" href="#"><i class="fas fa-angle-left"></i></a></li>
 			    <li class="page-item"><a class="page-link" href="#">1</a></li>
 			    <li class="page-item"><a class="page-link" href="#">2</a></li>
 			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+			    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li> -->
 			  </ul>
 			</nav>
 		</div>
