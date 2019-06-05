@@ -44,10 +44,16 @@ class PostSerializer(serializers.ModelSerializer):
 		return strip_newline[:90] + '...'
 
 	def get_thumb_img(self, obj):
-		return obj.thumbnail_image.url
+		if obj.thumbnail_image:
+			return obj.thumbnail_image.url
+		else:
+			return
 
 	def get_feat_img(self, obj):
-		return obj.featured_image.url
+		if obj.featured_image:
+			return obj.featured_image.url
+		else:
+			return
 
 	def get_post_url(self, obj):
 		return reverse('posts:post_detail', kwargs={'post_slug': obj.post_slug, 'post_id': obj.pk} )
