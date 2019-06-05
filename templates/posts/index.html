@@ -82,46 +82,68 @@
 <script>
 
 $(document).ready(function(){
+	// empty list to be filled with post objects
 	var postList = [];
+	// empty var to be set with api paginated urls
 	var nextPostUrl;
 	var prevPostUrl;
 	var nextOffsetOnePostUrl;
 	var prevOffsetOnePostUrl;
 
 	function parsePosts(){
+		// function used to parse and format posts
 		if (postList == 0){
+			// checks if post list is empty
 			// empty container before displaying message regaring 0 object
 			$('#featured-post').empty()
 			$('#general-post').empty()
+			// error message if 0 post objects available
 			$('#featured-post').append('<h3 class="text-center py-5">Currently there aren\'t any posts available.</h3>')
 		} else {
+			// index set to determine post number in list
+			// index value used in logic for featured post vs general post
 			var index = 0;
+			// empty all general post cards before parsing and appending
 			$('#general-post').empty()
+			// loop through post list
 			$.each(postList, function(key, value){
-				// set category variable for checking if category exists later
-				var postCategory;
 				var postTitle = value.post_title
 				var postShortTitle = value.shorter_title
 				var postPubDate = value.pub_date
 				var postContent = value.strip_content
 				var postShortContent = value.shorter_content
-				// check if category exists otherwise it breaks
+				var postUrl = value.post_url
+				// set category variable for checking if category exists
+				var postCategory;
+				// need to check if category exists otherwise it breaks
 				if (value.post_category[0]) {
 					postCategory = value.post_category[0].category_name
 				} else {
-					postCategory = ''
+					postCategory = 'General'
 				}
-				var postFeatImg = value.feat_img
-				var postThumbImg = value.thumb_img
-				var postUrl = value.post_url
+
+				// set empty variable for post image
+				var postImg;
+				// logic checking if image objects exist
+				if (value.thumb_img) {
+					postImg = value.thumb_img
+				} else if (value.feat_img) {
+					postImg = value.feat_img
+				} else {
+					postImg = ''
+				}
+
+				// index iterates by 1 through loop
 				index += 1
+				// if index value 1 or first post object, show post in featured format
+				// else show post in general format
 				if (index == 1) {
 					$('#featured-post').html(
-						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(' + postThumbImg + ');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postTitle + '</h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
+						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(' + postImg + ');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postTitle + '</h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
 					).hide().fadeIn(500);
 				} else {
 					$('#general-post').append(
-						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(' + postThumbImg + ');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postShortTitle + '</h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(' + postImg + ');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postShortTitle + '</h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
 					).hide().fadeIn(500);
 				}
 
@@ -130,18 +152,19 @@ $(document).ready(function(){
 		}
 	}
 
+	// function building pagiation logic
 	function buildPagination(){
-		// if previous page exists append previous arrow element
-
+		
+		// set var to empty string - used to build full pagination element
 		var pagLinks = '';
 
-		console.log(prevPostUrl)
-		console.log(nextPostUrl)
-
+		// check if previous page url exists in API - if exists add previous arrow to string
 		if (prevPostUrl) {
 			pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
 		}
 
+		// check if previous page url exists and next page url does not exist in API
+		// if true, user at end of pagination sequence
 		if (prevPostUrl && !nextPostUrl){
 			var prevOffsetOne = prevNumber - 1;
 			if (prevOffsetOne > 0){
@@ -151,6 +174,8 @@ $(document).ready(function(){
 			}
 		}
 
+		// check if next page url exists and previous page url exists in API
+		// if both true, user in middle of pagination sequence
 		if (prevPostUrl && nextPostUrl){
 			var prevOffsetOne = prevNumber - 1;
 			var nextOffsetOne = nextNumber + 1;
@@ -163,6 +188,8 @@ $(document).ready(function(){
 			}
 		}
 
+		// check if next page url exists and previous page url does not exist in API
+		// if true, user at beginning of pagination sequence
 		if (!prevPostUrl && nextPostUrl){
 			var nextOffsetOne = nextNumber + 1;
 			if (nextOffsetOne <= totalPages){
@@ -172,22 +199,24 @@ $(document).ready(function(){
 			}	
 		}
 
-		// if next page exists append next arrow element
+		// check if next page url exists in API - if exists add next arrow to string
 		if (nextPostUrl) {
 			pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li>'
 		}
 
-		console.log(pagLinks)
-
+		// after pagLinks variable fully built, add to page via html()
 		$('#pagination-list').html(pagLinks).hide().fadeIn(500);
 	}
 
 	function fetchPosts(url, cat){
-		console.log('fetching...')
+		// empty var for setting api url
 		var fetchUrl;
+		// check if url argument passed through function
 		if (!url) {
+			// default url if no url argument passed through
 			fetchUrl = '/blog/api/list-post/'
 		} else if (cat) {
+			// builds category api url if cat argument passed through
 			fetchUrl = url + cat + '/'
 		} else {
 			fetchUrl = url
@@ -196,7 +225,7 @@ $(document).ready(function(){
 			url: fetchUrl,
 			method: 'GET',
 			success: function(data){
-				console.log(fetchUrl)
+				// grab api url data
 				currentUrl = fetchUrl
 				currentIndex = data['prev_page_num'] + 1
 				prevNumber = data['prev_page_num']
@@ -204,7 +233,10 @@ $(document).ready(function(){
 				nextNumber = data['nex_page_num']
 				nextNumberOffsetOne = nextNumber + 1
 				totalPages = data['total_pages']
+				// object result data
 				postList = data['results']
+				// check if next and previous api urls exist
+				// must set to undefined if they do not exist in order to clear variable
 				if (data.next){
 					nextPostUrl = data.next
 				} else {
@@ -216,6 +248,7 @@ $(document).ready(function(){
 					prevPostUrl = undefined
 				}
 
+				// set var urls to be used depending on which api is called
 				var allUrl = '/blog/api/list-post/'
 				var catUrl = '/blog/api/' + cat + '/'
 
@@ -246,12 +279,14 @@ $(document).ready(function(){
 					}
 				}
 				
+				// execute function to parse posts
 				parsePosts()
-				// checks number of pages
+
+				// checks number of total pages in api
 				if (totalPages > 1){
 					buildPagination()
 				} else {
-					// need to remove pagination 
+					// remove pagination element if < 1 page exists
 					$('#pagination-list').empty()
 				}
 			},
@@ -262,11 +297,12 @@ $(document).ready(function(){
 		})
 	}
 
+	// automically execute function on page load
 	fetchPosts();
 
+	// event handlers for pagination
 	$(document).on('click', '#pagePrevious', function(event){
 		event.preventDefault()
-		console.log('tester')
 		if (prevPostUrl){
 			fetchPosts(prevPostUrl)
 		}
@@ -274,7 +310,6 @@ $(document).ready(function(){
 
 	$(document).on('click', '#pageNext', function(event){
 		event.preventDefault()
-		console.log('tester')
 		if (nextPostUrl){
 			fetchPosts(nextPostUrl)
 		}
@@ -296,14 +331,17 @@ $(document).ready(function(){
 		}
 	})
 
+	// execute when All is clicked in category nav
 	$(document).on('click', '#allPosts', function(event){
 		event.preventDefault()
 		$('#categoryH1').empty()
 		fetchPosts()
 	})
 
+	// execute when categories are clicked
 	$(document).on('click', '#categoryName', function(event){
 		event.preventDefault()
+		// grab category values - get 'self' data with 'this' keyword
 		var catSlug = $(this).attr('name');
 		var catName = $(this).text();
 		fetchPosts('/blog/api/', catSlug)
@@ -317,6 +355,7 @@ $(document).ready(function(){
 		$(this).addClass('active');
 	});
 
+	// rotate fa icon 180 deg when clicked
 	$(document).on('click', '.cat-nav .navbar-toggler', function() {
 		$('#flipOver').toggleClass('fa-rotate-180');
 	});
@@ -330,6 +369,7 @@ $(document).ready(function(){
 {% block schema_data %}{% endblock %}
 
 {% block content %}
+<!-- hero -->
 <div class="blog-hp-hero-bg">
 	<div class="container">
 		<div class="row py-5">
@@ -338,6 +378,7 @@ $(document).ready(function(){
 				<p class="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</div>
 		</div>
+		<!-- category navigation -->
 		<nav class="navbar navbar-expand-md navbar-light bg-light cat-nav">
 		  <a class="navbar-brand navbar-toggler pl-0" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" href="#">Categories <i class="fas fa-angle-down" id="flipOver"></i></a>
 		  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -351,6 +392,7 @@ $(document).ready(function(){
 		</nav>
 	</div>
 </div>
+<!-- blog post cards -->
 <div class="light-gray-arch-bg">
 	<div class="container">
 		<div class="row" id="categoryH1">
