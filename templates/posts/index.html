@@ -338,23 +338,8 @@ $(document).ready(function(){
 				<p class="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</div>
 		</div>
-		{% comment %}
-		<div class="row">
-			<div class="col-12">
-				<ul class="list-inline">
-						<li class="list-inline-item"><a href="#" id="allPosts">All</a></li>
-					{% for category in categories %}
-						<li class="list-inline-item"><a href="#" id="categoryName" name="{{ category.category_slug }}">{{ category.category_name }}</a></li>
-					{% endfor %}
-				</ul>
-			</div>
-		</div>
-		{% endcomment %}
-		<nav class="navbar navbar-expand-lg navbar-light bg-light cat-nav">
+		<nav class="navbar navbar-expand-md navbar-light bg-light cat-nav">
 		  <a class="navbar-brand navbar-toggler pl-0" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" href="#">Categories <i class="fas fa-angle-down" id="flipOver"></i></a>
-		  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		  </button> -->
 		  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		    <div class="navbar-nav">
 		    	<a class="nav-item nav-link active" id="allPosts" href="#">All</a>
@@ -364,7 +349,6 @@ $(document).ready(function(){
 		    </div>
 		  </div>
 		</nav>
-		<!-- tester -->
 	</div>
 </div>
 <div class="light-gray-arch-bg">
