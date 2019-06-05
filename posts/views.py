@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView
 from .models import Post, Category
 from rest_framework import generics
 from .serializers import PostSerializer
-from .pagination import StandardResultsPagination
+from .pagination import StandardResultsPagination, YourPagination
 
 # Create your views here.
 
@@ -37,7 +37,7 @@ def post_detail(request, post_slug, post_id):
 class ListPostView(generics.ListAPIView):
 	queryset = Post.objects.filter(is_published=True).order_by('-publication_date')
 	serializer_class = PostSerializer
-	pagination_class = StandardResultsPagination
+	pagination_class = YourPagination
 
 class CategoryPostListView(generics.ListAPIView):
 	serializer_class = PostSerializer
