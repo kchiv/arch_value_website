@@ -50,11 +50,7 @@
 {% block script %}
 <script>
 
-const urlParams = new URLSearchParams(window.location.search);
-
 $(document).ready(function(){
-
-	const myParam = urlParams.get('page');
 	var postList = [];
 	var nextPostUrl;
 	var prevPostUrl;
@@ -63,17 +59,27 @@ $(document).ready(function(){
 
 	function parsePosts(){
 		if (postList == 0){
+			// empty container before displaying message regaring 0 object
+			$('#featured-post').empty()
+			$('#general-post').empty()
 			$('#featured-post').append('<h3 class="text-center py-5">Currently there aren\'t any posts available.</h3>')
 		} else {
 			var index = 0;
 			$('#general-post').empty()
 			$.each(postList, function(key, value){
+				// set category variable for checking if category exists later
+				var postCategory;
 				var postTitle = value.post_title
 				var postShortTitle = value.shorter_title
 				var postPubDate = value.pub_date
 				var postContent = value.strip_content
 				var postShortContent = value.shorter_content
-				var postCategory = value.post_category[0].category_name
+				// check if category exists otherwise it breaks
+				if (value.post_category[0]) {
+					postCategory = value.post_category[0].category_name
+				} else {
+					postCategory = ''
+				}
 				var postFeatImg = value.feat_img
 				var postThumbImg = value.thumb_img
 				var postUrl = value.post_url
@@ -95,6 +101,7 @@ $(document).ready(function(){
 
 	function buildPagination(){
 		// if previous page exists append previous arrow element
+
 		var pagLinks = '';
 
 		console.log(prevPostUrl)
@@ -141,14 +148,16 @@ $(document).ready(function(){
 
 		console.log(pagLinks)
 
-		$('#pagination-list').html(pagLinks)
+		$('#pagination-list').html(pagLinks).hide().fadeIn(500);
 	}
 
-	function fetchPosts(url){
+	function fetchPosts(url, cat){
 		console.log('fetching...')
 		var fetchUrl;
 		if (!url) {
 			fetchUrl = '/blog/api/list-post/'
+		} else if (cat) {
+			fetchUrl = url + cat + '/'
 		} else {
 			fetchUrl = url
 		}
@@ -156,6 +165,7 @@ $(document).ready(function(){
 			url: fetchUrl,
 			method: 'GET',
 			success: function(data){
+				console.log(fetchUrl)
 				currentUrl = fetchUrl
 				currentIndex = data['prev_page_num'] + 1
 				prevNumber = data['prev_page_num']
@@ -176,13 +186,13 @@ $(document).ready(function(){
 				}
 
 				if (prevNumberOffsetOne > 0) {
-					prevOffsetOnePostUrl = '/blog/api/list-post/?page=' + prevNumberOffsetOne
+					prevOffsetOnePostUrl = fetchUrl + '?page=' + prevNumberOffsetOne
 				} else {
 					prevOffsetOnePostUrl = undefined
 				}
 
 				if (nextNumberOffsetOne <= totalPages) {
-					nextOffsetOnePostUrl = '/blog/api/list-post/?page=' + nextNumberOffsetOne
+					nextOffsetOnePostUrl = fetchUrl + '?page=' + nextNumberOffsetOne
 				} else {
 					nextOffsetOnePostUrl = undefined
 				}
@@ -191,6 +201,9 @@ $(document).ready(function(){
 				// checks number of pages
 				if (totalPages > 1){
 					buildPagination()
+				} else {
+					// need to remove pagination 
+					$('#pagination-list').empty()
 				}
 			},
 			error: function(data){
@@ -233,6 +246,15 @@ $(document).ready(function(){
 			fetchPosts(prevOffsetOnePostUrl)
 		}
 	})
+
+	$(document).on('click', '#categoryName', function(event){
+		event.preventDefault()
+		var catSlug = $(this).attr('name');
+		var catName = $(this).text();
+		fetchPosts('/blog/api/', catSlug)
+		$('#categoryH1').empty()
+		$('#categoryH1').append('<div class="col-12 mt-4"><h3 class="text-muted">' + catName + '</h3><div class="row ml-0"><div class="col-lg-1 col-md-2 col-3 arch-underline"></div></div></div>')
+	})
 });
 	
 </script>
@@ -256,7 +278,7 @@ $(document).ready(function(){
 				<ul class="list-inline">
 						<li class="list-inline-item">All</li>
 					{% for category in categories %}
-						<li class="list-inline-item">{{ category.category_name }}</li>
+						<li class="list-inline-item"><a href="#" id="categoryName" name="{{ category.category_slug }}">{{ category.category_name }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>
@@ -265,13 +287,8 @@ $(document).ready(function(){
 </div>
 <div class="light-gray-arch-bg">
 	<div class="container">
-		<div class="row">
-			<div class="col-12 mt-4">
-				<h3 class="text-muted">Product Training</h3>
-				<div class="row ml-0">
-					<div class="col-lg-1 col-md-2 col-3 arch-underline"></div>
-				</div>
-			</div>
+		<div class="row" id="categoryH1">
+			
 		</div>
 		<div class="row justify-content-center">
 			<div id="featured-post" class="col-12">
