@@ -312,8 +312,8 @@ $(document).ready(function(){
 	})
 
 	// add active class to category nav links on click
-	$(document).on('click', '.cat-nav.nav-link', function() {
-		$(this).parent().find('.cat-nav.nav-link.active').removeClass('active');
+	$(document).on('click', '.cat-nav .navbar-nav .nav-link', function() {
+		$(this).parent().find('.active').removeClass('active');
 		$(this).addClass('active');
 	});
 
