@@ -45,4 +45,4 @@ class CategoryPostListView(generics.ListAPIView):
 
 	def get_queryset(self):
 		category_slug = self.kwargs['category_slug']
-		return Post.objects.all().filter(post_category__category_slug=category_slug).order_by('-publication_date')
+		return Post.objects.all().filter(post_category__category_slug=category_slug, is_published=True).order_by('-publication_date')
