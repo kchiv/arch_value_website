@@ -44,6 +44,10 @@
   		cursor: default;
 	}
 
+	.cat-nav {
+		background-color: transparent !important;
+	}
+
 </style>
 {% endblock %}
 
@@ -214,18 +218,6 @@ $(document).ready(function(){
 						nextOffsetOnePostUrl = undefined
 					}
 				}
-
-				// if (prevNumberOffsetOne > 0) {
-				// 	prevOffsetOnePostUrl = fetchUrl + '?page=' + prevNumberOffsetOne
-				// } else {
-				// 	prevOffsetOnePostUrl = undefined
-				// }
-
-				// if (nextNumberOffsetOne <= totalPages) {
-				// 	nextOffsetOnePostUrl = fetchUrl + '?page=' + nextNumberOffsetOne
-				// } else {
-				// 	nextOffsetOnePostUrl = undefined
-				// }
 				
 				parsePosts()
 				// checks number of pages
@@ -277,6 +269,12 @@ $(document).ready(function(){
 		}
 	})
 
+	$(document).on('click', '#allPosts', function(event){
+		event.preventDefault()
+		$('#categoryH1').empty()
+		fetchPosts()
+	})
+
 	$(document).on('click', '#categoryName', function(event){
 		event.preventDefault()
 		var catSlug = $(this).attr('name');
@@ -303,16 +301,33 @@ $(document).ready(function(){
 				<p class="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 			</div>
 		</div>
+		{% comment %}
 		<div class="row">
 			<div class="col-12">
 				<ul class="list-inline">
-						<li class="list-inline-item">All</li>
+						<li class="list-inline-item"><a href="#" id="allPosts">All</a></li>
 					{% for category in categories %}
 						<li class="list-inline-item"><a href="#" id="categoryName" name="{{ category.category_slug }}">{{ category.category_name }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>
 		</div>
+		{% endcomment %}
+		<nav class="navbar navbar-expand-lg navbar-light bg-light cat-nav">
+		  <a class="navbar-brand navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" href="#">Categories</a>
+		  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button> -->
+		  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+		    <div class="navbar-nav">
+		    	<a class="nav-item nav-link active" id="allPosts" href="#">All <span class="sr-only">(current)</span></a>
+		    	{% for category in categories %}
+		    		<a class="nav-item nav-link" id="categoryName" name="{{ category.category_slug }}" href="#">{{ category.category_name }}</a>
+		    	{% endfor %}
+		    </div>
+		  </div>
+		</nav>
+		<!-- tester -->
 	</div>
 </div>
 <div class="light-gray-arch-bg">
