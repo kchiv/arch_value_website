@@ -21,7 +21,7 @@
 			      	{% with header_length=post.header_title|length %}
 			        <h5 class="card-title">{{ post.header_title | slice:":110" }}{% if header_length > 110 %}...{% endif %}</h5>
 			        {% endwith %}
-			        <p class="card-text">{{ post.post_content | striptags | slice:":150" }}...</p>
+			        <p class="card-text">{{ post.post_content | striptags | safe | slice:":150" }}...</p>
 			        <div class="row">
 						<div class="col-6">
 							<a href="{% url 'posts:post_detail' post.post_slug post.pk %}" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a>
