@@ -84,11 +84,20 @@
 $(document).ready(function(){
 	// empty list to be filled with post objects
 	var postList = [];
-	// empty var to be set with api paginated urls
+	// empty vars to be set with global variables
+	// vars updated in functions
+	var currentIndex;
+	var prevNumber;
+	var nextNumber;
 	var nextPostUrl;
 	var prevPostUrl;
+	var nextNumberOffsetOne;
+	var prevNumberOffsetOne;
 	var nextOffsetOnePostUrl;
 	var prevOffsetOnePostUrl;
+	var startUrl;
+	var catVar;
+
 
 	function parsePosts(){
 		// function used to parse and format posts
@@ -160,7 +169,7 @@ $(document).ready(function(){
 
 		// check if previous page url exists in API - if exists add previous arrow to string
 		if (prevPostUrl) {
-			pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
+			pagLinks += '<li class="page-item"><a class="page-link" id="pageBeginning" href="#"><i class="fas fa-angle-double-left"></i></a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
 		}
 
 		// check if previous page url exists and next page url does not exist in API
@@ -203,7 +212,7 @@ $(document).ready(function(){
 
 		// check if next page url exists in API - if exists add next arrow to string
 		if (nextPostUrl) {
-			pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li>'
+			pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li><li class="page-item"><a class="page-link" id="pageEnd" href="#"><i class="fas fa-angle-double-right"></i></a></li>'
 		}
 
 		// after pagLinks variable fully built, add to page via html()
@@ -211,15 +220,19 @@ $(document).ready(function(){
 	}
 
 	function fetchPosts(url, cat){
-		// empty var for setting api url
-		var fetchUrl;
+		// checks if category slug argument is passed through function
+		// if it is passed through the function, the global variable is updated
+		// if it isn't passed through the function, the variable remains the same
+		if (cat) {
+			catVar = cat
+		}
 		// check if url argument passed through function
 		if (!url) {
 			// default url if no url argument passed through
 			fetchUrl = '/blog/api/list-post/'
 		} else if (cat) {
 			// builds category api url if cat argument passed through
-			fetchUrl = url + cat + '/'
+			fetchUrl = url + catVar + '/'
 		} else {
 			fetchUrl = url
 		}
@@ -229,11 +242,43 @@ $(document).ready(function(){
 			success: function(data){
 				// grab api url data
 				currentUrl = fetchUrl
-				currentIndex = data['prev_page_num'] + 1
-				prevNumber = data['prev_page_num']
-				prevNumberOffsetOne = prevNumber - 1
-				nextNumber = data['nex_page_num']
-				nextNumberOffsetOne = nextNumber + 1
+
+				// set current index
+				if (data['prev_page_num']) {
+					currentIndex = data['prev_page_num'] + 1
+				} else {
+					currentIndex = 1
+				}
+				
+				// set previous page index
+				if (data['prev_page_num']) {
+					prevNumber = data['prev_page_num']
+				} else {
+					prevNumber = undefined
+				}
+				
+				// set next page index
+				if (data['nex_page_num']) {
+					nextNumber = data['nex_page_num']
+				} else {
+					nextNumber = undefined
+				}
+
+				// set previous page index offset 1
+				if (prevNumber) {
+					prevNumberOffsetOne = prevNumber - 1
+				} else {
+					prevNumberOffsetOne = undefined
+				}
+
+				// set next page index offset 1
+				if (nextNumber) {
+					nextNumberOffsetOne = nextNumber + 1
+				} else {
+					nextNumberOffsetOne = undefined
+				}
+				
+				// set total pages
 				totalPages = data['total_pages']
 				// object result data
 				postList = data['results']
@@ -252,7 +297,7 @@ $(document).ready(function(){
 
 				// set var urls to be used depending on which api is called
 				var allUrl = '/blog/api/list-post/'
-				var catUrl = '/blog/api/' + cat + '/'
+				var catUrl = '/blog/api/category/' + catVar + '/'
 
 				// checks which API is being called and connects to correct path
 				if (fetchUrl.includes('list-post')){
@@ -267,7 +312,12 @@ $(document).ready(function(){
 					} else {
 						nextOffsetOnePostUrl = undefined
 					}
-				} else {
+
+					startUrl = allUrl
+					endUrl = allUrl + '?page=' +totalPages
+				}
+
+				if (fetchUrl.includes('category')) {
 					if (prevNumberOffsetOne > 0) {
 						prevOffsetOnePostUrl = catUrl + '?page=' + prevNumberOffsetOne
 					} else {
@@ -279,6 +329,9 @@ $(document).ready(function(){
 					} else {
 						nextOffsetOnePostUrl = undefined
 					}
+
+					startUrl = catUrl
+					endUrl = catUrl + '?page=' +totalPages
 				}
 				
 				// execute function to parse posts
@@ -313,8 +366,29 @@ $(document).ready(function(){
 	fetchPosts();
 
 	// event handlers for pagination
+	$(document).on('click', '#pageBeginning', function(event){
+		event.preventDefault()
+		console.log(startUrl)
+		if (startUrl){
+			fetchPosts(startUrl)
+		}
+		scrollerTop()
+	})
+
+	// event handlers for pagination
+	$(document).on('click', '#pageEnd', function(event){
+		event.preventDefault()
+		console.log(endUrl)
+		if (endUrl){
+			fetchPosts(endUrl)
+		}
+		scrollerTop()
+	})
+
+	// event handlers for pagination
 	$(document).on('click', '#pagePrevious', function(event){
 		event.preventDefault()
+		console.log(prevPostUrl)
 		if (prevPostUrl){
 			fetchPosts(prevPostUrl)
 		}
@@ -323,6 +397,7 @@ $(document).ready(function(){
 
 	$(document).on('click', '#pageNext', function(event){
 		event.preventDefault()
+		console.log(nextPostUrl)
 		if (nextPostUrl){
 			fetchPosts(nextPostUrl)
 		}
@@ -331,7 +406,7 @@ $(document).ready(function(){
 
 	$(document).on('click', '#nextOffsetOne', function(event){
 		event.preventDefault()
-		console.log('tester')
+		console.log(nextOffsetOnePostUrl)
 		if (nextOffsetOnePostUrl){
 			fetchPosts(nextOffsetOnePostUrl)
 		}
@@ -340,7 +415,7 @@ $(document).ready(function(){
 
 	$(document).on('click', '#previousOffsetOne', function(event){
 		event.preventDefault()
-		console.log('tester')
+		console.log(prevOffsetOnePostUrl)
 		if (prevOffsetOnePostUrl){
 			fetchPosts(prevOffsetOnePostUrl)
 		}
@@ -360,7 +435,7 @@ $(document).ready(function(){
 		// grab category values - get 'self' data with 'this' keyword
 		var catSlug = $(this).attr('name');
 		var catName = $(this).text();
-		fetchPosts('/blog/api/', catSlug)
+		fetchPosts('/blog/api/category/', catSlug)
 		$('#categoryH1').empty()
 		$('#categoryH1').append('<div class="col-12 mt-4"><h3 class="text-muted">' + catName + '</h3><div class="row ml-0"><div class="col-lg-1 col-md-2 col-3 arch-underline"></div></div></div>')
 	})
