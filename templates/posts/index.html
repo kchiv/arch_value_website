@@ -74,7 +74,6 @@
 	.cat-nav .navbar-nav .nav-link.active {
 		color: #d1d1d1;
 	}
-
 </style>
 {% endblock %}
 
@@ -148,11 +147,11 @@ $(document).ready(function(){
 				// else show post in general format
 				if (index == 1) {
 					$('#featured-post').html(
-						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postTitle + '</h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
+						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postTitle + '</a></h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
 					).hide().fadeIn(500);
 				} else {
 					$('#general-post').append(
-						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title">' + postShortTitle + '</h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
 					).hide().fadeIn(500);
 				}
 

@@ -155,3 +155,12 @@
 			font-size: 5px;
 			color: #b8b8b8;
 		}
+
+		.blog-card .card-title a {
+			color: #3a3a3a;
+		}
+
+		.blog-card .card-title a:hover {
+			color: #606060;
+			text-decoration: none;
+		}
