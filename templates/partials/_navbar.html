@@ -30,6 +30,11 @@
       <li class="nav-item {% if request.get_full_path == blog_homepage %}active{% endif %}">
         <a class="nav-link" href="{% url 'posts:index' %}">Blog</a>
       </li>
+      {# Need to create page object with slug 'events' #}
+      {% url 'pages:page_detail' 'events' as events_page %}
+      <li class="nav-item {% if request.get_full_path == events_page %}active{% endif %}">
+        <a class="nav-link" href="{% url 'pages:page_detail' 'events' %}">Events</a>
+      </li>
       {# Need to create page object with slug 'about' #}
       {% url 'pages:page_detail' 'about' as about_page %}
       <li class="nav-item {% if request.get_full_path == about_page %}active{% endif %}">
