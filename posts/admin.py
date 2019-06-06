@@ -9,6 +9,7 @@ class PostAdmin(admin.ModelAdmin):
 	list_display = ('get_title', 'get_name', 'publication_date', 'is_published', 'get_categories', 'get_image')
 	list_display_links = ('get_title', 'get_image')
 	search_fields = ('get_title', 'partner_description')
+	filter_horizontal = ('post_tag',)
 	list_editable = ('is_published',)
 	list_per_page = 25
 
