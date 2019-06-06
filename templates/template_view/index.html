@@ -211,7 +211,9 @@ $( document ).ready(function() {
 {# Testimonials #}
 {% include 'partials/_hp_testimonial.html' %}
 {# Blog #}
-{% include 'partials/_hp_blog.html' %}
+{% if posts %}
+	{% include 'partials/_hp_blog.html' %}
+{% endif %}
 {# Contact #}
 {% include 'partials/_hp_contact.html' %}
 {% endblock %}
