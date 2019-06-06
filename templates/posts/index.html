@@ -183,8 +183,10 @@ $(document).ready(function(){
 				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'	
 			} else if (prevOffsetOne <= 0 && nextOffsetOne <= totalPages){
 				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
-			} else if (prevOffsetOne > 0 && nextOffsetOne >= totalPages){
+			} else if (prevOffsetOne > 0 && nextOffsetOne > totalPages){
 				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
 			}
 		}
 
