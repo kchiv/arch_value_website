@@ -13,9 +13,10 @@ class StandardResultsPagination(pagination.PageNumberPagination):
 		if self.page.has_previous():
 			response.data['prev_page_num'] = self.page.previous_page_number()
 		else:
-			response.data['prev_page_num'] = 0
+			response.data['prev_page_num'] = None
+
 		if self.page.has_next():
 			response.data['nex_page_num'] = self.page.next_page_number()
 		else:
-			response.data['nex_page_num'] = 0
+			response.data['nex_page_num'] = None
 		return response
