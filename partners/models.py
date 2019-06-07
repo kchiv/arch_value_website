@@ -7,6 +7,7 @@ from filebrowser.fields import FileBrowseField
 
 class Partner(models.Model):
 	partner_name = models.CharField(max_length=200)
+	partner_listing_order = models.IntegerField(blank=True, null=True)
 	is_published = models.BooleanField(default=True, help_text='Check the box to publish Partner.')
 	partner_logo = FileBrowseField('Partner logo', max_length=1000, extensions=['.jpg', 
 														'.jpeg', 
