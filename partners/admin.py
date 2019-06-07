@@ -5,9 +5,10 @@ from .models import Partner
 # Register your models here.
 
 class PartnerAdmin(admin.ModelAdmin):
-	list_display = ('partner_name', 'get_image')
+	list_display = ('partner_name', 'get_image', 'partner_listing_order')
 	list_display_links = ('partner_name', 'get_image')
 	search_fields = ('partner_name', 'partner_description')
+	list_editable = ('partner_listing_order',)
 	list_per_page = 25
 
 	def get_image(self, obj):
