@@ -39,6 +39,14 @@ class ListPostView(generics.ListAPIView):
 	serializer_class = PostSerializer
 	pagination_class = StandardResultsPagination
 
+class TagListPostView(generics.ListAPIView):
+	serializer_class = PostSerializer
+	pagination_class = StandardResultsPagination
+
+	def get_queryset(self):
+		tag_id = self.kwargs['tag_id']
+		return Post.objects.filter(post_tag__pk=tag_id, is_published=True).order_by('-publication_date')
+
 class CategoryPostListView(generics.ListAPIView):
 	serializer_class = PostSerializer
 	pagination_class = StandardResultsPagination
