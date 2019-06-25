@@ -23,6 +23,350 @@
 {% block script %}
 	<script>
 		{{ page.custom_js }}
+
+	$(document).ready(function(){
+		// empty list to be filled with post objects
+		var eventList = [];
+		// empty vars to be set with global variables
+		// vars updated in functions
+		var currentIndex;
+		var prevNumber;
+		var nextNumber;
+		var nextEventUrl;
+		var prevEventUrl;
+		var nextNumberOffsetOne;
+		var prevNumberOffsetOne;
+		var nextOffsetOneEventUrl;
+		var prevOffsetOneEventUrl;
+		var startUrl;
+		var catVar;
+
+
+		function parseEventList(){
+			// function used to parse and format posts
+			if (eventList == 0){
+				// checks if post list is empty
+				// empty container before displaying message regaring 0 object
+				$('#event-row').empty()
+				// error message if 0 post objects available
+				$('#event-row').append('<div class="col-12"><h3 class="text-center py-5">Currently there aren\'t any events available.</h3></div>')
+			} else {
+				// empty all general post cards before parsing and appending
+				$('#event-row').empty()
+				// loop through post list
+				$.each(eventList, function(key, value){
+					var eventName = value.event_name
+					var fullCountryName = value.full_country_name
+					var singleDayEvent = value.single_day_event
+					var startDate = value.start_date
+					var endDate = value.end_date
+					var year = value.year
+					var street = value.street
+					var city = value.city
+					var eventZipCode = value.event_zip_code
+					var state = value.state
+					var eventPartners = value.event_partners
+
+					$('#event-row').append(
+						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+					).hide().fadeIn(500);
+
+
+				})
+
+			}
+		}
+
+		// function building pagiation logic
+		function buildPagination(){
+			
+			// set var to empty string - used to build full pagination element
+			var pagLinks = '';
+
+			// check if previous page url exists in API - if exists add previous arrow to string
+			if (prevEventUrl) {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pageBeginning" href="#"><i class="fas fa-angle-double-left"></i></a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
+			}
+
+			// check if previous page url exists and next page url does not exist in API
+			// if true, user at end of pagination sequence
+			if (prevEventUrl && !nextEventUrl){
+				var prevOffsetOne = prevNumber - 1;
+				if (prevOffsetOne > 0){
+					pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+				} else {
+					pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+				}
+			}
+
+			// check if next page url exists and previous page url exists in API
+			// if both true, user in middle of pagination sequence
+			if (prevEventUrl && nextEventUrl){
+				var prevOffsetOne = prevNumber - 1;
+				var nextOffsetOne = nextNumber + 1;
+				if (prevOffsetOne > 0 && nextOffsetOne <= totalPages){
+					pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'	
+				} else if (prevOffsetOne <= 0 && nextOffsetOne <= totalPages){
+					pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+				} else if (prevOffsetOne > 0 && nextOffsetOne > totalPages){
+					pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+				} else {
+					pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+				}
+			}
+
+			// check if next page url exists and previous page url does not exist in API
+			// if true, user at beginning of pagination sequence
+			if (!prevEventUrl && nextEventUrl){
+				var nextOffsetOne = nextNumber + 1;
+				if (nextOffsetOne <= totalPages){
+					pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+				} else {
+					pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+				}	
+			}
+
+			// check if next page url exists in API - if exists add next arrow to string
+			if (nextEventUrl) {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li><li class="page-item"><a class="page-link" id="pageEnd" href="#"><i class="fas fa-angle-double-right"></i></a></li>'
+			}
+
+			// after pagLinks variable fully built, add to page via html()
+			$('#pagination-list').html(pagLinks).hide().fadeIn(500);
+		}
+
+		function fetchPosts(url, cat){
+			// checks if category slug argument is passed through function
+			// if it is passed through the function, the global variable is updated
+			// if it isn't passed through the function, the variable remains the same
+			if (cat) {
+				catVar = cat
+			}
+			// check if url argument passed through function
+			if (!url) {
+				// default url if no url argument passed through
+				fetchUrl = '/events-api/api/list-event/'
+			} else if (cat) {
+				// builds category api url if cat argument passed through
+				fetchUrl = url + catVar + '/'
+			} else {
+				fetchUrl = url
+			}
+			$.ajax({
+				url: fetchUrl,
+				method: 'GET',
+				success: function(data){
+					// grab api url data
+					currentUrl = fetchUrl
+
+					// set current index
+					if (data['prev_page_num']) {
+						currentIndex = data['prev_page_num'] + 1
+					} else {
+						currentIndex = 1
+					}
+					
+					// set previous page index
+					if (data['prev_page_num']) {
+						prevNumber = data['prev_page_num']
+					} else {
+						prevNumber = undefined
+					}
+					
+					// set next page index
+					if (data['nex_page_num']) {
+						nextNumber = data['nex_page_num']
+					} else {
+						nextNumber = undefined
+					}
+
+					// set previous page index offset 1
+					if (prevNumber) {
+						prevNumberOffsetOne = prevNumber - 1
+					} else {
+						prevNumberOffsetOne = undefined
+					}
+
+					// set next page index offset 1
+					if (nextNumber) {
+						nextNumberOffsetOne = nextNumber + 1
+					} else {
+						nextNumberOffsetOne = undefined
+					}
+					
+					// set total pages
+					totalPages = data['total_pages']
+					// object result data
+					eventList = data['results']
+					// check if next and previous api urls exist
+					// must set to undefined if they do not exist in order to clear variable
+					if (data.next){
+						nextEventUrl = data.next
+					} else {
+						nextEventUrl = undefined
+					}
+					if (data.previous){
+						prevEventUrl = data.previous
+					} else {
+						prevEventUrl = undefined
+					}
+
+					// set var urls to be used depending on which api is called
+					var allUrl = '/blog/api/list-post/'
+					var catUrl = '/blog/api/category/' + catVar + '/'
+
+					// checks which API is being called and connects to correct path
+					if (fetchUrl.includes('list-post')){
+						if (prevNumberOffsetOne > 0) {
+							prevOffsetOneEventUrl = allUrl + '?page=' + prevNumberOffsetOne
+						} else {
+							prevOffsetOneEventUrl = undefined
+						}
+
+						if (nextNumberOffsetOne <= totalPages) {
+							nextOffsetOneEventUrl = allUrl + '?page=' + nextNumberOffsetOne
+						} else {
+							nextOffsetOneEventUrl = undefined
+						}
+
+						startUrl = allUrl
+						endUrl = allUrl + '?page=' +totalPages
+					}
+
+					if (fetchUrl.includes('category')) {
+						if (prevNumberOffsetOne > 0) {
+							prevOffsetOneEventUrl = catUrl + '?page=' + prevNumberOffsetOne
+						} else {
+							prevOffsetOneEventUrl = undefined
+						}
+
+						if (nextNumberOffsetOne <= totalPages) {
+							nextOffsetOneEventUrl = catUrl + '?page=' + nextNumberOffsetOne
+						} else {
+							nextOffsetOneEventUrl = undefined
+						}
+
+						startUrl = catUrl
+						endUrl = catUrl + '?page=' +totalPages
+					}
+					
+					// execute function to parse posts
+					parseEventList()
+
+					// checks number of total pages in api
+					if (totalPages > 1){
+						buildPagination()
+					} else {
+						// remove pagination element if < 1 page exists
+						$('#pagination-list').empty()
+					}
+				},
+				error: function(data){
+					console.log('error')
+					console.log(data)
+				}
+			})
+		}
+
+		// scrolls user to top of page - used on pagination clicks
+		function scrollerTop() {
+			$("body,html").animate(
+				{
+					scrollTop: $(".cat-nav").offset().top
+				},
+				200
+			)
+		}
+
+		// automically execute function on page load
+		fetchPosts();
+
+		// event handlers for pagination
+		$(document).on('click', '#pageBeginning', function(event){
+			event.preventDefault()
+			console.log(startUrl)
+			if (startUrl){
+				fetchPosts(startUrl)
+			}
+			scrollerTop()
+		})
+
+		// event handlers for pagination
+		$(document).on('click', '#pageEnd', function(event){
+			event.preventDefault()
+			console.log(endUrl)
+			if (endUrl){
+				fetchPosts(endUrl)
+			}
+			scrollerTop()
+		})
+
+		// event handlers for pagination
+		$(document).on('click', '#pagePrevious', function(event){
+			event.preventDefault()
+			console.log(prevEventUrl)
+			if (prevEventUrl){
+				fetchPosts(prevEventUrl)
+			}
+			scrollerTop()
+		})
+
+		$(document).on('click', '#pageNext', function(event){
+			event.preventDefault()
+			console.log(nextEventUrl)
+			if (nextEventUrl){
+				fetchPosts(nextEventUrl)
+			}
+			scrollerTop()
+		})
+
+		$(document).on('click', '#nextOffsetOne', function(event){
+			event.preventDefault()
+			console.log(nextOffsetOneEventUrl)
+			if (nextOffsetOneEventUrl){
+				fetchPosts(nextOffsetOneEventUrl)
+			}
+			scrollerTop()
+		})
+
+		$(document).on('click', '#previousOffsetOne', function(event){
+			event.preventDefault()
+			console.log(prevOffsetOneEventUrl)
+			if (prevOffsetOneEventUrl){
+				fetchPosts(prevOffsetOneEventUrl)
+			}
+			scrollerTop()
+		})
+
+		// execute when All is clicked in category nav
+		$(document).on('click', '#allPosts', function(event){
+			event.preventDefault()
+			$('#categoryH1').empty()
+			fetchPosts()
+		})
+
+		// execute when categories are clicked
+		$(document).on('click', '#categoryName', function(event){
+			event.preventDefault()
+			// grab category values - get 'self' data with 'this' keyword
+			var catSlug = $(this).attr('name');
+			var catName = $(this).text();
+			fetchPosts('/blog/api/category/', catSlug)
+			$('#categoryH1').empty()
+			$('#categoryH1').append('<div class="col-12 mt-4"><h3 class="text-muted">' + catName + '</h3><div class="row ml-0"><div class="col-lg-1 col-md-2 col-3 arch-underline"></div></div></div>')
+		})
+
+		// add active class to category nav links on click
+		$(document).on('click', '.cat-nav .navbar-nav .nav-link', function() {
+			$(this).parent().find('.active').removeClass('active');
+			$(this).addClass('active');
+		});
+
+		// rotate fa icon 180 deg when clicked
+		$(document).on('click', '.cat-nav .navbar-toggler', function() {
+			$('#flipOver').toggleClass('fa-rotate-180');
+		});
+	});
 	</script>
 {% endblock %}
 
@@ -36,7 +380,7 @@
 </div>
 
 <!-- remove after development!!! -->
-{% include 'cms_only/partners.html' %}
+{% include 'cms_only/events.html' %}
 <!-- remove after development!!! -->
 
 {{ page.page_content|safe }}
