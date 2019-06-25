@@ -20,6 +20,7 @@ class Event(models.Model):
 														'.tiff'], blank=True, null=True)
 	event_description = models.TextField(blank=True, help_text='Brief description of event.')
 	event_country = CountryField(blank=True, null=True, default='US')
+	event_venue = models.CharField(max_length=300, blank=True)
 	event_street = models.CharField(max_length=200, blank=True)
 	event_city = models.CharField(max_length=100, blank=True)
 	event_zip_code = models.IntegerField(blank=True, null=True)
