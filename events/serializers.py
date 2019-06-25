@@ -16,6 +16,7 @@ class DetailEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 	start_date = serializers.SerializerMethodField()
 	end_date = serializers.SerializerMethodField()
 	year = serializers.SerializerMethodField()
+	venue = serializers.SerializerMethodField()
 	street = serializers.SerializerMethodField()
 	city = serializers.SerializerMethodField()
 	state = serializers.SerializerMethodField()
@@ -43,6 +44,12 @@ class DetailEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 
 	def get_year(self, obj):
 		return obj.event_end.strftime('%Y')
+
+	def get_venue(self, obj):
+		if obj.event_venue == '':
+			return None
+		else:
+			return obj.event_venue
 
 	def get_street(self, obj):
 		if obj.event_street == '':
@@ -74,6 +81,7 @@ class DetailEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 				'start_date', 
 				'end_date', 
 				'year', 
+				'venue',
 				'street',
 				'city',
 				'event_zip_code',
@@ -88,6 +96,7 @@ class ListEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 	start_date = serializers.SerializerMethodField()
 	end_date = serializers.SerializerMethodField()
 	year = serializers.SerializerMethodField()
+	venue = serializers.SerializerMethodField()
 	street = serializers.SerializerMethodField()
 	city = serializers.SerializerMethodField()
 	state = serializers.SerializerMethodField()
@@ -109,6 +118,12 @@ class ListEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 
 	def get_year(self, obj):
 		return obj.event_end.strftime('%Y')
+
+	def get_venue(self, obj):
+		if obj.event_venue == '':
+			return None
+		else:
+			return obj.event_venue
 
 	def get_street(self, obj):
 		if obj.event_street == '':
@@ -138,6 +153,7 @@ class ListEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 				'start_date', 
 				'end_date', 
 				'year', 
+				'venue',
 				'street',
 				'city',
 				'event_zip_code',
