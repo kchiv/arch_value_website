@@ -61,14 +61,67 @@
 					var startDate = value.start_date
 					var endDate = value.end_date
 					var year = value.year
+					var venue = value.venue
 					var street = value.street
 					var city = value.city
 					var eventZipCode = value.event_zip_code
 					var state = value.state
 					var eventPartners = value.event_partners
+					var fullDate
+					var venueString
+					var streetString
+					var cityStateString
+					var partnerString = ''
+					var fullPartnerString = ''
+
+					if (singleDayEvent) {
+						fullDate = endDate + ', ' + year
+					} else {
+						fullDate = startDate + ' - ' + endDate + ', ' + year
+					}
+
+					if (venue) {
+						venueString = '<p class="font-weight-light my-0" id="venue">' + venue + '</p>'
+					} else {
+						venueString = ''
+					}
+
+					if (street) {
+						streetString = '<p class="font-weight-light my-0" id="street">' + street + '</p>'
+					} else {
+						streetString = ''
+					}
+
+					if (fullCountryName == 'United States of America') {
+						if (!eventZipCode) {
+							cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + '</p>'
+						} else {
+							cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + ', ' + eventZipCode + '</p>'
+						}
+					} else {
+						if (!eventZipCode) {
+							cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + fullCountryName + '</p>'
+						} else {
+							cityStateString = '<p class="font-weight-light my-0" id="zip">' + eventZipCode + ', ' + city + ', ' + fullCountryName + '</p>'
+						}
+					}
+
+					for (i=0; i < eventPartners.length; i++) {
+						if (eventPartners.length == 0) {
+							partnerString = ''
+						} else if ((i+1) == eventPartners.length) {
+							partnerString += eventPartners[i].partner_name
+						} else {
+							partnerString += eventPartners[i].partner_name + ', '
+						}
+					}
+
+					if (partnerString != '') {
+						fullPartnerString = '<p class="text-muted mt-2 mb-0">Partners:</p><p class="font-weight-light my-0" id="country">' + partnerString + '</p>'
+					}
 
 					$('#event-row').append(
-						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+						'<div class="col-lg-3 col-md-4 col-sm-6 col-6 py-4 d-flex align-items-stretch"><div class="card"><div class="card-body"><h5 class="card-title">' + eventName + '</h5><div class="row ml-0"><div class="col-2 arch-underline"></div></div><h6 class="font-weight-light my-3">' + fullDate + '</h6><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div></div></div>'
 					).hide().fadeIn(500);
 
 
