@@ -188,20 +188,11 @@
 			$('#pagination-list').html(pagLinks).hide().fadeIn(500);
 		}
 
-		function fetchPosts(url, cat){
-			// checks if category slug argument is passed through function
-			// if it is passed through the function, the global variable is updated
-			// if it isn't passed through the function, the variable remains the same
-			if (cat) {
-				catVar = cat
-			}
+		function fetchPosts(url){
 			// check if url argument passed through function
 			if (!url) {
 				// default url if no url argument passed through
 				fetchUrl = '/events-api/api/list-event/'
-			} else if (cat) {
-				// builds category api url if cat argument passed through
-				fetchUrl = url + catVar + '/'
 			} else {
 				fetchUrl = url
 			}
@@ -265,43 +256,23 @@
 					}
 
 					// set var urls to be used depending on which api is called
-					var allUrl = '/blog/api/list-post/'
-					var catUrl = '/blog/api/category/' + catVar + '/'
+					var allUrl = '/events-api/api/list-event/'
 
 					// checks which API is being called and connects to correct path
-					if (fetchUrl.includes('list-post')){
-						if (prevNumberOffsetOne > 0) {
-							prevOffsetOneEventUrl = allUrl + '?page=' + prevNumberOffsetOne
-						} else {
-							prevOffsetOneEventUrl = undefined
-						}
-
-						if (nextNumberOffsetOne <= totalPages) {
-							nextOffsetOneEventUrl = allUrl + '?page=' + nextNumberOffsetOne
-						} else {
-							nextOffsetOneEventUrl = undefined
-						}
-
-						startUrl = allUrl
-						endUrl = allUrl + '?page=' +totalPages
+					if (prevNumberOffsetOne > 0) {
+						prevOffsetOneEventUrl = allUrl + '?page=' + prevNumberOffsetOne
+					} else {
+						prevOffsetOneEventUrl = undefined
 					}
 
-					if (fetchUrl.includes('category')) {
-						if (prevNumberOffsetOne > 0) {
-							prevOffsetOneEventUrl = catUrl + '?page=' + prevNumberOffsetOne
-						} else {
-							prevOffsetOneEventUrl = undefined
-						}
-
-						if (nextNumberOffsetOne <= totalPages) {
-							nextOffsetOneEventUrl = catUrl + '?page=' + nextNumberOffsetOne
-						} else {
-							nextOffsetOneEventUrl = undefined
-						}
-
-						startUrl = catUrl
-						endUrl = catUrl + '?page=' +totalPages
+					if (nextNumberOffsetOne <= totalPages) {
+						nextOffsetOneEventUrl = allUrl + '?page=' + nextNumberOffsetOne
+					} else {
+						nextOffsetOneEventUrl = undefined
 					}
+
+					startUrl = allUrl
+					endUrl = allUrl + '?page=' + totalPages
 					
 					// execute function to parse posts
 					parseEventList()
@@ -325,7 +296,7 @@
 		function scrollerTop() {
 			$("body,html").animate(
 				{
-					scrollTop: $(".cat-nav").offset().top
+					scrollTop: $("#event-row").offset().top
 				},
 				200
 			)
@@ -338,9 +309,7 @@
 		$(document).on('click', '#pageBeginning', function(event){
 			event.preventDefault()
 			console.log(startUrl)
-			if (startUrl){
-				fetchPosts(startUrl)
-			}
+			fetchPosts()
 			scrollerTop()
 		})
 
@@ -391,34 +360,6 @@
 			scrollerTop()
 		})
 
-		// execute when All is clicked in category nav
-		$(document).on('click', '#allPosts', function(event){
-			event.preventDefault()
-			$('#categoryH1').empty()
-			fetchPosts()
-		})
-
-		// execute when categories are clicked
-		$(document).on('click', '#categoryName', function(event){
-			event.preventDefault()
-			// grab category values - get 'self' data with 'this' keyword
-			var catSlug = $(this).attr('name');
-			var catName = $(this).text();
-			fetchPosts('/blog/api/category/', catSlug)
-			$('#categoryH1').empty()
-			$('#categoryH1').append('<div class="col-12 mt-4"><h3 class="text-muted">' + catName + '</h3><div class="row ml-0"><div class="col-lg-1 col-md-2 col-3 arch-underline"></div></div></div>')
-		})
-
-		// add active class to category nav links on click
-		$(document).on('click', '.cat-nav .navbar-nav .nav-link', function() {
-			$(this).parent().find('.active').removeClass('active');
-			$(this).addClass('active');
-		});
-
-		// rotate fa icon 180 deg when clicked
-		$(document).on('click', '.cat-nav .navbar-toggler', function() {
-			$('#flipOver').toggleClass('fa-rotate-180');
-		});
 	});
 	</script>
 {% endblock %}
