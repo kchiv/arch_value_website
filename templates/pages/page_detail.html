@@ -16,6 +16,10 @@
 			color: #fff;
 		}
 
+		#event-row .card {
+			cursor: pointer;
+		}
+
 		{{ page.custom_css }}
 	</style>
 {% endblock %}
@@ -67,6 +71,7 @@
 					var eventZipCode = value.event_zip_code
 					var state = value.state
 					var eventPartners = value.event_partners
+					var eventId = value.id
 					var fullDate
 					var venueString
 					var streetString
@@ -121,7 +126,7 @@
 					}
 
 					$('#event-row').append(
-						'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card w-100"><div class="card-body"><h5 class="card-title">' + eventName + '</h5><div class="row ml-0"><div class="col-2 arch-underline"></div></div><h6 class="font-weight-light my-3">' + fullDate + '</h6><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div></div></div>'
+						'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card w-100"><div class="modal-toggle" id="' + eventId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><h5 class="card-title">' + eventName + '</h5><div class="row ml-0"><div class="col-2 arch-underline"></div></div><h6 class="font-weight-light my-3">' + fullDate + '</h6><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div></div></div></div>'
 					).hide().fadeIn(500);
 
 
@@ -292,6 +297,11 @@
 			})
 		}
 
+		// function for fetching single event
+		function fetchSingleEvent(eventId){
+
+		}
+
 		// scrolls user to top of page - used on pagination clicks
 		function scrollerTop() {
 			$("body,html").animate(
@@ -357,6 +367,14 @@
 			if (prevOffsetOneEventUrl){
 				fetchPosts(prevOffsetOneEventUrl)
 			}
+			scrollerTop()
+		})
+
+		// event handler modal
+		$(document).on('click', '.modal-toggle', function(event){
+			var getElemId = $(this).attr('id')
+			console.log(getElemId)
+			fetchSingleEvent(getElemId)
 			scrollerTop()
 		})
 
