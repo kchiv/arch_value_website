@@ -20,6 +20,7 @@ class DetailEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 	street = serializers.SerializerMethodField()
 	city = serializers.SerializerMethodField()
 	state = serializers.SerializerMethodField()
+	feat_img = serializers.SerializerMethodField()
 
 	def get_full_country_name(self, obj):
 		return obj.event_country.name
@@ -69,12 +70,18 @@ class DetailEventSerializer(CountryFieldMixin, serializers.ModelSerializer):
 		else:
 			return obj.event_state
 
+	def get_feat_img(self, obj):
+		if obj.event_image:
+			return obj.event_image.url
+		else:
+			return
+
 	class Meta:
 		model = Event
 		fields = ('id', 
 				'event_name', 
 				'is_published',
-				'event_image', 
+				'feat_img', 
 				'full_description', 
 				'full_country_name', 
 				'single_day_event', 

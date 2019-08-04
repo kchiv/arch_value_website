@@ -135,6 +135,83 @@
 			}
 		}
 
+		function parseEventDetail(eventDetail){
+			// empty all general post cards before parsing and appending
+			$('.modal-content').empty()
+			var eventName = eventDetail.event_name
+			var fullCountryName = eventDetail.full_country_name
+			var singleDayEvent = eventDetail.single_day_event
+			var startDate = eventDetail.start_date
+			var endDate = eventDetail.end_date
+			var year = eventDetail.year
+			var venue = eventDetail.venue
+			var street = eventDetail.street
+			var city = eventDetail.city
+			var eventZipCode = eventDetail.event_zip_code
+			var state = eventDetail.state
+			var eventPartners = eventDetail.event_partners
+			var eventId = eventDetail.id
+			var eventImage = eventDetail.event_image
+			var fullDate
+			var venueString
+			var streetString
+			var cityStateString
+			var partnerString = ''
+			var fullPartnerString = ''
+
+			if (singleDayEvent) {
+				fullDate = endDate + ', ' + year
+			} else {
+				fullDate = startDate + ' - ' + endDate + ', ' + year
+			}
+
+			if (venue) {
+				venueString = '<p class="font-weight-light my-0" id="venue">' + venue + '</p>'
+			} else {
+				venueString = ''
+			}
+
+			if (street) {
+				streetString = '<p class="font-weight-light my-0" id="street">' + street + '</p>'
+			} else {
+				streetString = ''
+			}
+
+			if (fullCountryName == 'United States of America') {
+				if (!eventZipCode) {
+					cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + '</p>'
+				} else {
+					cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + ', ' + eventZipCode + '</p>'
+				}
+			} else {
+				if (!eventZipCode) {
+					cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + fullCountryName + '</p>'
+				} else {
+					cityStateString = '<p class="font-weight-light my-0" id="zip">' + eventZipCode + ', ' + city + ', ' + fullCountryName + '</p>'
+				}
+			}
+
+			for (i=0; i < eventPartners.length; i++) {
+				if (eventPartners.length == 0) {
+					partnerString = ''
+				} else if ((i+1) == eventPartners.length) {
+					partnerString += eventPartners[i].partner_name
+				} else {
+					partnerString += eventPartners[i].partner_name + ', '
+				}
+			}
+
+			if (partnerString != '') {
+				fullPartnerString = '<p class="text-muted mt-2 mb-0">Partners:</p><p class="font-weight-light my-0" id="country">' + partnerString + '</p>'
+			}
+
+			$('.modal-content').append(
+				'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card w-100"><div class="modal-toggle" id="' + eventId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><h5 class="card-title">' + eventName + '</h5><div class="row ml-0"><div class="col-2 arch-underline"></div></div><h6 class="font-weight-light my-3">' + fullDate + '</h6><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div></div></div></div>'
+			).hide().fadeIn(500);
+
+			
+		}
+
 		// function building pagiation logic
 		function buildPagination(){
 			
@@ -300,6 +377,26 @@
 		// function for fetching single event
 		function fetchSingleEvent(eventId){
 
+			fetchUrl = '/events-api/api/event/' + eventId + '/'
+
+			$.ajax({
+				url: fetchUrl,
+				method: 'GET',
+				success: function(data){
+
+					eventDetail = data
+					console.log(eventDetail)
+					
+					// execute function to parse posts
+					parseEventDetail(eventDetail)
+
+				},
+				error: function(data){
+					console.log('error')
+					console.log(data)
+				}
+			})
+
 		}
 
 		// scrolls user to top of page - used on pagination clicks
@@ -375,7 +472,6 @@
 			var getElemId = $(this).attr('id')
 			console.log(getElemId)
 			fetchSingleEvent(getElemId)
-			scrollerTop()
 		})
 
 	});
