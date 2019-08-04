@@ -122,7 +122,7 @@
 					}
 
 					if (partnerString != '') {
-						fullPartnerString = '<p class="text-muted mt-2 mb-0">Partners:</p><p class="font-weight-light my-0" id="country">' + partnerString + '</p>'
+						fullPartnerString = '<p class="text-muted mt-2 mb-0">Partners:</p><p class="font-weight-light my-0" id="partner">' + partnerString + '</p>'
 					}
 
 					$('#event-row').append(
@@ -151,13 +151,28 @@
 			var state = eventDetail.state
 			var eventPartners = eventDetail.event_partners
 			var eventId = eventDetail.id
-			var eventImage = eventDetail.event_image
+			var eventImage = eventDetail.feat_img
+			var eventDescription = eventDetail.full_description
 			var fullDate
 			var venueString
 			var streetString
 			var cityStateString
 			var partnerString = ''
 			var fullPartnerString = ''
+			var fullEventDescription = ''
+			var fullImgCss = ''
+			var imgContainer = ''
+
+			console.log(eventImage)
+
+			if (eventImage) {
+				fullImgCss = '<style>.event-img{background-image: url(\'' + eventImage + '\'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 220px;}</style>'
+				imgContainer = '<div class="col-sm-6 col-12 my-4"><div class="event-img"></div></div>'
+			}
+
+			if (eventDescription) {
+				fullEventDescription = '<div class="col-sm-6 col-12 my-4"><p class="text-muted mb-0">Description:</p><p class="font-weight-light my-0" id="description">' + eventDescription + '</p></div>'
+			}
 
 			if (singleDayEvent) {
 				fullDate = endDate + ', ' + year
@@ -206,7 +221,7 @@
 			}
 
 			$('.modal-content').append(
-				'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card w-100"><div class="modal-toggle" id="' + eventId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><h5 class="card-title">' + eventName + '</h5><div class="row ml-0"><div class="col-2 arch-underline"></div></div><h6 class="font-weight-light my-3">' + fullDate + '</h6><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div></div></div></div>'
+				fullImgCss + '<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + eventName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row">' + imgContainer + '<div class="col-sm-6 col-12 my-4"><p class="text-muted mb-0">Dates:</p><p class="font-weight-light my-0" id="date">' + fullDate + '</p><p class="text-muted mb-0">Address:</p>' + venueString + streetString + cityStateString + fullPartnerString + '</div>' + fullEventDescription + '</div></div>'
 			).hide().fadeIn(500);
 
 			
