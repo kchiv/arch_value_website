@@ -1,13 +1,29 @@
+<!-- Exclude Style Tags in CMS -->
+<style type="text/css">
+	#partner-row .card {
+			cursor: pointer;
+		}
+</style>
+
+<!-- Include All HTM in CMS -->
 <div class="bg-white">
 	<div class="container">
-		<div class="row py-4">
-			<div class="col-lg-4 col-sm-6 col-12 py-4">
-				<div class="card">
-				  <div class="card-body">
-				    This is some text within a card body.
-				  </div>
+		<div class="row py-4 d-flex" id="partner-row">
+
+		</div>
+		<div class="row justify-content-center">
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination pag-custom pb-0" id="pagination-list">
+			  	<!-- jquery appends pagination -->
+			  </ul>
+			</nav>
+		</div>
+		<!-- modal -->
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
 				</div>
-			</div>	
+			</div>
 		</div>
 	</div>	
 </div>
