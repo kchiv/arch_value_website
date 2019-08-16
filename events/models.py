@@ -17,7 +17,9 @@ class Event(models.Model):
 														'.gif', 
 														'.png', 
 														'.tif', 
-														'.tiff'], blank=True, null=True)
+														'.tiff'], 
+														blank=True, 
+														null=True)
 	event_description = models.TextField(blank=True, help_text='Brief description of event.')
 	event_country = CountryField(blank=True, null=True, default='US')
 	event_venue = models.CharField(max_length=300, blank=True)

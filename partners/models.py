@@ -14,7 +14,9 @@ class Partner(models.Model):
 														'.gif', 
 														'.png', 
 														'.tif', 
-														'.tiff'], blank=True)
+														'.tiff'], 
+														blank=True,
+														help_text='Ideal image size is 250px width x 250px height. Image proportions must be square')
 	partner_url = models.URLField(blank=True, help_text='Enter the URL for partner website.')
 	partner_description = HTMLField('Partner description', blank=True)
 	partner_tag = models.ForeignKey(Tag, models.SET_NULL, blank=True, null=True, help_text='Select tag for the partner if it exists. This will populate blog posts with that tag.')
