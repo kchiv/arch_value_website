@@ -61,7 +61,7 @@
 						var partnerId = value.id
 
 						$('#partner-row').append(
-							'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card text-center w-100"><div class="modal-toggle" id="' + partnerId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><img class="img-fluid" src="' + partnerImg + '"><h6 class="font-weight-light my-3">' + partnerName + '</h6></div></div></div></div>'
+							'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card text-center w-100"><div class="modal-toggle" id="' + partnerId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><div class="row"><div class="col-12"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div></div><div class="row"><div class="col-12"><h6 class="font-weight-light my-3">' + partnerName + '</h6></div></div></div></div></div></div>'
 						).hide().fadeIn(500);
 
 
@@ -70,96 +70,42 @@
 				}
 			}
 
-			function parseEventDetail(eventDetail){
+			function parsePartnerDetail(partnerDetail){
 				// empty all general post cards before parsing and appending
-				$('.modal-content').empty()
-				var eventName = eventDetail.event_name
-				var fullCountryName = eventDetail.full_country_name
-				var singleDayEvent = eventDetail.single_day_event
-				var startDate = eventDetail.start_date
-				var endDate = eventDetail.end_date
-				var year = eventDetail.year
-				var venue = eventDetail.venue
-				var street = eventDetail.street
-				var city = eventDetail.city
-				var eventZipCode = eventDetail.event_zip_code
-				var state = eventDetail.state
-				var eventPartners = eventDetail.event_partners
-				var eventId = eventDetail.id
-				var eventImage = eventDetail.feat_img
-				var eventDescription = eventDetail.full_description
-				var fullDate
-				var venueString
-				var streetString
-				var cityStateString
-				var partnerString = ''
-				var fullPartnerString = ''
-				var fullEventDescription = ''
-				var fullImgCss = ''
-				var imgContainer = ''
+				$('.modal-body').empty()
+				var partnerName = partnerDetail.partner_name
+				var partnerImg = partnerDetail.partner_img
+				var partnerSite = partnerDetail.partner_website
+				var partnerDescription = partnerDetail.partner_description
+				var partnerBlogTag = partnerDetail.partner_tag
+				var partnerBlogTagId
+				var partnerWebsite = ''
+				var partnerFullDesc = ''
 
-				console.log(eventImage)
-
-				if (eventImage) {
-					fullImgCss = '<style>.event-img{background-image: url(\'' + eventImage + '\'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 220px;}</style>'
-					imgContainer = '<div class="col-sm-6 col-12 my-4"><div class="event-img"></div></div>'
-				}
-
-				if (eventDescription) {
-					fullEventDescription = '<div class="col-sm-6 col-12 my-4"><h6 class="text-muted mb-0">Description:</h6><p class="font-weight-light my-0" id="description">' + eventDescription + '</p></div>'
-				}
-
-				if (singleDayEvent) {
-					fullDate = endDate + ', ' + year
+				if (partnerBlogTag) {
+					partnerBlogTagId = partnerBlogTag.id
+					fetchBlogPosts(partnerBlogTagId)
 				} else {
-					fullDate = startDate + ' - ' + endDate + ', ' + year
+					// append message saying no posts are available
 				}
 
-				if (venue) {
-					venueString = '<p class="font-weight-light my-0" id="venue">' + venue + '</p>'
-				} else {
-					venueString = ''
+				if (partnerSite) {
+					partnerWebsite = '<div class="col-sm-6 col-12 my-4"><h6 class="text-muted mb-0">Website:</h6><p class="my-0"><a style="word-wrap: break-word;" href="' + partnerSite + '" rel="nofollow">' + partnerSite + '</a></p></div>'
 				}
 
-				if (street) {
-					streetString = '<p class="font-weight-light my-0" id="street">' + street + '</p>'
-				} else {
-					streetString = ''
+				if (partnerDescription) {
+					partnerFullDesc = '<div class="col-12 my-4"><h6 class="text-muted mb-0">About ' + partnerName + ':</h6><p class="font-weight-light my-0">' + partnerDescription + '</p></div>'
 				}
 
-				if (fullCountryName == 'United States of America') {
-					if (!eventZipCode) {
-						cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + '</p>'
-					} else {
-						cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + state + ', ' + eventZipCode + '</p>'
-					}
-				} else {
-					if (!eventZipCode) {
-						cityStateString = '<p class="font-weight-light my-0" id="zip">' + city + ', ' + fullCountryName + '</p>'
-					} else {
-						cityStateString = '<p class="font-weight-light my-0" id="zip">' + eventZipCode + ', ' + city + ', ' + fullCountryName + '</p>'
-					}
-				}
-
-				for (i=0; i < eventPartners.length; i++) {
-					if (eventPartners.length == 0) {
-						partnerString = ''
-					} else if ((i+1) == eventPartners.length) {
-						partnerString += eventPartners[i].partner_name
-					} else {
-						partnerString += eventPartners[i].partner_name + ', '
-					}
-				}
-
-				if (partnerString != '') {
-					fullPartnerString = '<h6 class="text-muted mt-2 mb-0">Partners:</h6><p class="font-weight-light my-0" id="country">' + partnerString + '</p>'
-				}
-
-				$('.modal-content').append(
-					fullImgCss + '<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + eventName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row">' + imgContainer + '<div class="col-sm-6 col-12 my-4"><h6 class="text-muted mb-0">Dates:</h6><p class="font-weight-light my-0" id="date">' + fullDate + '</p><h6 class="text-muted mt-2 mb-0">Address:</h6>' + venueString + streetString + cityStateString + fullPartnerString + '</div>' + fullEventDescription + '</div></div>'
+				$('.modal-body').append(
+					'<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + partnerName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row partner-details"><div class="col-sm-6 col-12 my-4"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div>' + partnerWebsite + partnerFullDesc + '</div></div>'
 				).hide().fadeIn(500);
 
 				
+			}
+
+			function parsePostList(blogPostList) {
+
 			}
 
 			// function building pagiation logic
@@ -220,7 +166,7 @@
 				$('#pagination-list').html(pagLinks).hide().fadeIn(500);
 			}
 
-			function fetchPosts(url){
+			function fetchPartners(url){
 				// check if url argument passed through function
 				if (!url) {
 					// default url if no url argument passed through
@@ -325,7 +271,7 @@
 			}
 
 			// function for fetching single event
-			function fetchSingleEvent(eventId){
+			function fetchSinglePartner(eventId){
 
 				fetchUrl = '/partners-api/api/partner/' + eventId
 
@@ -334,11 +280,11 @@
 					method: 'GET',
 					success: function(data){
 
-						eventDetail = data
-						console.log(eventDetail)
+						partnerDetail = data
+						console.log(partnerDetail)
 						
 						// execute function to parse posts
-						parseEventDetail(eventDetail)
+						parsePartnerDetail(partnerDetail)
 
 					},
 					error: function(data){
@@ -348,6 +294,33 @@
 				})
 
 			}
+
+			function fetchBlogPosts(tagId){
+				// check if url argument passed through function
+				
+				fetchUrl = '/blog/api/tag/' + tagId + '/'
+
+				$.ajax({
+					url: fetchUrl,
+					method: 'GET',
+					success: function(data){
+						// object result data
+						blogPostList = data['results']
+
+						console.log(blogPostList)
+						
+						parsePostList(blogPostList)
+
+					},
+					error: function(data){
+						console.log('error')
+						console.log(data)
+					}
+				})
+			}
+
+
+			
 
 			// scrolls user to top of page - used on pagination clicks
 			function scrollerTop() {
@@ -360,13 +333,13 @@
 			}
 
 			// automically execute function on page load
-			fetchPosts();
+			fetchPartners();
 
 			// event handlers for pagination
 			$(document).on('click', '#pageBeginning', function(event){
 				event.preventDefault()
 				console.log(startUrl)
-				fetchPosts()
+				fetchPartners()
 				scrollerTop()
 			})
 
@@ -375,7 +348,7 @@
 				event.preventDefault()
 				console.log(endUrl)
 				if (endUrl){
-					fetchPosts(endUrl)
+					fetchPartners(endUrl)
 				}
 				scrollerTop()
 			})
@@ -385,7 +358,7 @@
 				event.preventDefault()
 				console.log(prevPartnerUrl)
 				if (prevPartnerUrl){
-					fetchPosts(prevPartnerUrl)
+					fetchPartners(prevPartnerUrl)
 				}
 				scrollerTop()
 			})
@@ -394,7 +367,7 @@
 				event.preventDefault()
 				console.log(nextPartnerUrl)
 				if (nextPartnerUrl){
-					fetchPosts(nextPartnerUrl)
+					fetchPartners(nextPartnerUrl)
 				}
 				scrollerTop()
 			})
@@ -403,7 +376,7 @@
 				event.preventDefault()
 				console.log(nextOffsetOnePartnerUrl)
 				if (nextOffsetOnePartnerUrl){
-					fetchPosts(nextOffsetOnePartnerUrl)
+					fetchPartners(nextOffsetOnePartnerUrl)
 				}
 				scrollerTop()
 			})
@@ -412,7 +385,7 @@
 				event.preventDefault()
 				console.log(prevOffsetOnePartnerUrl)
 				if (prevOffsetOnePartnerUrl){
-					fetchPosts(prevOffsetOnePartnerUrl)
+					fetchPartners(prevOffsetOnePartnerUrl)
 				}
 				scrollerTop()
 			})
@@ -421,7 +394,7 @@
 			$(document).on('click', '.modal-toggle', function(event){
 				var getElemId = $(this).attr('id')
 				console.log(getElemId)
-				fetchSingleEvent(getElemId)
+				fetchSinglePartner(getElemId)
 			})
 
 		});
