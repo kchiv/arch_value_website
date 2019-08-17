@@ -93,20 +93,71 @@
 
 				if (partnerBlogTag) {
 					partnerBlogTagId = partnerBlogTag.id
-					fetchBlogPosts(partnerBlogTagId)
+					fetchBlogPosts(partnerBlogTagId)	
 				} else {
 					partnerBlogError = '<div class="col-12 text-center"><h5 class="my-4">Currently there aren\'t any posts available.</h5></div>'
 				}
 
 				$('.modal-body').append(
-					'<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + partnerName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row partner-details"><div class="col-sm-6 col-12 my-4"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div>' + partnerWebsite + partnerFullDesc + '</div><div class="row"><div class="col-12"><h2 class="mb-2">Featured Posts</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div></div><div class="row partner-blog">' + partnerBlogError + '</div></div>'
+					'<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + partnerName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row partner-details"><div class="col-sm-6 col-12 my-4"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div>' + partnerWebsite + partnerFullDesc + '</div><div class="row"><div class="col-12"><h2 class="mb-2">Featured Posts</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div></div><div class="row partner-blog justify-content-center">' + partnerBlogError + '<div id="featured-post" class="col-12"></div></div><div class="row" id="general-post"></div></div>'
 				).hide().fadeIn(500);
 
 				
 			}
 
 			function parsePostList(blogPostList) {
+				var index = 0;
+				if (blogPostList.length < 1) {
+					$('.partner-blog').append('<div class="col-12 text-center"><h5 class="my-4">Currently there aren\'t any posts available.</h5></div>')
+				} else {
+					$.each(blogPostList, function(key, value){
+						var postTitle = value.post_title
+						var postShortTitle = value.shorter_title
+						var postPubDate = value.pub_date
+						var postContent = value.strip_content
+						var postShortContent = value.shorter_content
+						var postUrl = value.post_url
+						// set category variable for checking if category exists
+						var postCategory;
+						// need to check if category exists otherwise it breaks
+						if (value.post_category[0]) {
+							postCategory = value.post_category[0].category_name
+						} else {
+							postCategory = 'General'
+						}
 
+						// set empty variable for post image
+						var postImg;
+						// logic checking if image objects exist
+						if (value.thumb_img) {
+							postImg = value.thumb_img
+						} else if (value.feat_img) {
+							postImg = value.feat_img
+						} else {
+							postImg = ''
+						}
+
+						// checks iterator count and breaks if above 5 objects
+						if (index > 4) {
+							return false
+						}
+
+						// index iterates by 1 through loop
+						index += 1
+						// if index value 1 or first post object, show post in featured format
+						// else show post in general format
+						if (index == 1) {
+							$('#featured-post').html(
+								'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-lg-4 rounded blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="col-lg-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postTitle + '</a></h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
+							).hide().fadeIn(500);
+						} else {
+							$('#general-post').append(
+								'<div class="col-lg-6 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+							).hide().fadeIn(500);
+						}
+
+					})
+				}
 			}
 
 			// function building pagiation logic
@@ -282,7 +333,6 @@
 					success: function(data){
 
 						partnerDetail = data
-						console.log(partnerDetail)
 						
 						// execute function to parse posts
 						parsePartnerDetail(partnerDetail)
@@ -318,6 +368,7 @@
 						console.log(data)
 					}
 				})
+
 			}
 
 
@@ -339,7 +390,6 @@
 			// event handlers for pagination
 			$(document).on('click', '#pageBeginning', function(event){
 				event.preventDefault()
-				console.log(startUrl)
 				fetchPartners()
 				scrollerTop()
 			})
@@ -347,7 +397,6 @@
 			// event handlers for pagination
 			$(document).on('click', '#pageEnd', function(event){
 				event.preventDefault()
-				console.log(endUrl)
 				if (endUrl){
 					fetchPartners(endUrl)
 				}
@@ -357,7 +406,6 @@
 			// event handlers for pagination
 			$(document).on('click', '#pagePrevious', function(event){
 				event.preventDefault()
-				console.log(prevPartnerUrl)
 				if (prevPartnerUrl){
 					fetchPartners(prevPartnerUrl)
 				}
@@ -366,7 +414,6 @@
 
 			$(document).on('click', '#pageNext', function(event){
 				event.preventDefault()
-				console.log(nextPartnerUrl)
 				if (nextPartnerUrl){
 					fetchPartners(nextPartnerUrl)
 				}
@@ -375,7 +422,6 @@
 
 			$(document).on('click', '#nextOffsetOne', function(event){
 				event.preventDefault()
-				console.log(nextOffsetOnePartnerUrl)
 				if (nextOffsetOnePartnerUrl){
 					fetchPartners(nextOffsetOnePartnerUrl)
 				}
@@ -384,7 +430,6 @@
 
 			$(document).on('click', '#previousOffsetOne', function(event){
 				event.preventDefault()
-				console.log(prevOffsetOnePartnerUrl)
 				if (prevOffsetOnePartnerUrl){
 					fetchPartners(prevOffsetOnePartnerUrl)
 				}
@@ -394,7 +439,6 @@
 			// event handler modal
 			$(document).on('click', '.modal-toggle', function(event){
 				var getElemId = $(this).attr('id')
-				console.log(getElemId)
 				fetchSinglePartner(getElemId)
 			})
 
