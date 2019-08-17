@@ -25,7 +25,7 @@
 		{{ page.custom_js|safe }}
 
 		$(document).ready(function(){
-			// empty list to be filled with post objects
+			// empty list to be filled with partner objects
 			var partnerList = [];
 			// empty vars to be set with global variables
 			// vars updated in functions
@@ -43,23 +43,25 @@
 
 
 			function parsePartnerList(){
-				// function used to parse and format posts
+				// function used to parse and format partners
 				if (partnerList == 0){
-					// checks if post list is empty
+					// checks if partner list is empty
 					// empty container before displaying message regaring 0 object
 					$('#partner-row').empty()
 					// error message if 0 post objects available
 					$('#partner-row').append('<div class="col-12"><h3 class="text-center py-5">Currently there aren\'t any partners available.</h3></div>')
 				} else {
-					// empty all general post cards before parsing and appending
+					// empty all partner cards before parsing and appending
 					$('#partner-row').empty()
-					// loop through post list
+					// loop through partner list
 					$.each(partnerList, function(key, value){
 
+						// grab partner properties
 						var partnerName = value.partner_name
 						var partnerImg = value.partner_img
 						var partnerId = value.id
 
+						// append partner cards ins partner list view
 						$('#partner-row').append(
 							'<div class="col-lg-3 col-md-4 col-sm-6 col-12 my-4 d-flex align-items-stretch"><div class="card text-center w-100"><div class="modal-toggle" id="' + partnerId + '" data-toggle="modal" data-target=".bd-example-modal-lg"><div class="card-body"><div class="row"><div class="col-12"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div></div><div class="row"><div class="col-12"><h6 class="font-weight-light my-3">' + partnerName + '</h6></div></div></div></div></div></div>'
 						).hide().fadeIn(500);
@@ -71,8 +73,10 @@
 			}
 
 			function parsePartnerDetail(partnerDetail){
-				// empty all general post cards before parsing and appending
+				// empty all partner cards before parsing and appending
 				$('.modal-body').empty()
+
+				// grab partner object properties
 				var partnerName = partnerDetail.partner_name
 				var partnerImg = partnerDetail.partner_img
 				var partnerSite = partnerDetail.partner_website
@@ -84,20 +88,26 @@
 				var partnerBlogError = ''
 
 				if (partnerSite) {
+					// if partner site exists, create element
 					partnerWebsite = '<div class="col-sm-6 col-12 my-4"><h6 class="text-muted mb-0">Website:</h6><p class="my-0"><a style="word-wrap: break-word;" href="' + partnerSite + '" rel="nofollow">' + partnerSite + '</a></p></div>'
 				}
 
 				if (partnerDescription) {
+					// if partner description exists, create element
 					partnerFullDesc = '<div class="col-12 my-4"><h6 class="text-muted mb-0">About ' + partnerName + ':</h6><p class="font-weight-light mt-2">' + partnerDescription + '</p></div>'
 				}
 
 				if (partnerBlogTag) {
+					// if partner tag exists, grab tag ID and execute function
+					// fetching blog posts
 					partnerBlogTagId = partnerBlogTag.id
 					fetchBlogPosts(partnerBlogTagId)	
 				} else {
+					// if partner tag does not exist, create element error message
 					partnerBlogError = '<div class="col-12 text-center"><h5 class="my-4">Currently there aren\'t any posts available.</h5></div>'
 				}
 
+				// append partner detail to modal
 				$('.modal-body').append(
 					'<div class="container-fluid"><div class="row"><div class="col-10"><h2 class="mt-4 mb-2">' + partnerName + '</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div><div class="col-2"><div class="mt-3"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div></div><div class="row partner-details"><div class="col-sm-6 col-12 my-4"><div class="d-flex align-items-center justify-content-center"><img class="img-fluid d-inline-block" src="' + partnerImg + '"></div></div>' + partnerWebsite + partnerFullDesc + '</div><div class="row"><div class="col-12"><h2 class="mb-2">Featured Posts</h2><div class="row ml-0"><div class="col-2 arch-underline"></div></div></div></div><div class="row partner-blog justify-content-center">' + partnerBlogError + '<div id="featured-post" class="col-12"></div></div><div class="row" id="general-post"></div></div>'
 				).hide().fadeIn(500);
@@ -106,11 +116,15 @@
 			}
 
 			function parsePostList(blogPostList) {
+				// set index variable for iterator
 				var index = 0;
 				if (blogPostList.length < 1) {
+					// if blog post array empty, append error message
 					$('.partner-blog').append('<div class="col-12 text-center"><h5 class="my-4">Currently there aren\'t any posts available.</h5></div>')
 				} else {
+					// if blog post array not empty, run loop on blog post array
 					$.each(blogPostList, function(key, value){
+						// grab blog post object properties
 						var postTitle = value.post_title
 						var postShortTitle = value.shorter_title
 						var postPubDate = value.pub_date
@@ -304,7 +318,7 @@
 						startUrl = allUrl
 						endUrl = allUrl + '?page=' + totalPages
 						
-						// execute function to parse posts
+						// execute function to parse partner list
 						parsePartnerList()
 
 						// checks number of total pages in api
@@ -322,7 +336,7 @@
 				})
 			}
 
-			// function for fetching single event
+			// function for fetching single partner
 			function fetchSinglePartner(eventId){
 
 				fetchUrl = '/partners-api/api/partner/' + eventId
@@ -334,7 +348,7 @@
 
 						partnerDetail = data
 						
-						// execute function to parse posts
+						// execute function to parse partner detail view
 						parsePartnerDetail(partnerDetail)
 
 					},
@@ -347,7 +361,6 @@
 			}
 
 			function fetchBlogPosts(tagId){
-				// check if url argument passed through function
 				
 				fetchUrl = '/blog/api/tag/' + tagId + '/'
 
@@ -357,9 +370,8 @@
 					success: function(data){
 						// object result data
 						blogPostList = data['results']
-
-						console.log(blogPostList)
 						
+						// execute function to parse blog post detail view
 						parsePostList(blogPostList)
 
 					},
