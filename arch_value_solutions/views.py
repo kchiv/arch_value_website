@@ -1,5 +1,7 @@
 from django.views.generic.base import TemplateView
 from posts.models import Post
+from django.contrib.admin.views.decorators import staff_member_required
+from django.utils.decorators import method_decorator
 
 class HomePageView(TemplateView):
 
@@ -24,3 +26,9 @@ class OemServicePageView(TemplateView):
 class DistServicePageView(TemplateView):
 
 	template_name = 'template_view/distributor.html'
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class DocumentationPageView(TemplateView):
+
+	template_name = 'template_view/documentation.html'

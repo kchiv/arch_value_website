@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from filebrowser.sites import site
-from .views import HomePageView, ContactPageView, OemServicePageView, DistServicePageView
+from .views import HomePageView, ContactPageView, OemServicePageView, DistServicePageView, DocumentationPageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('contact/', ContactPageView.as_view(), name='contact'),
     path('services/oem/', OemServicePageView.as_view(), name='oem'),
     path('services/distributor/', DistServicePageView.as_view(), name='distributor'),
+    path('documentation/', DocumentationPageView.as_view(), name='documentation'),
     path('events-api/', include('events.urls')),
     path('partners-api/', include('partners.urls')),
     path('blog/', include('posts.urls')),
