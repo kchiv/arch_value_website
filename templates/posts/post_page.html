@@ -6,6 +6,11 @@
 
 {% block inline_css %}
 	<style>
+
+		.blog-article-hero {
+			background-image: url("{{  post.featured_image.url }}");
+		}
+
 		{{ post.custom_css }}
 	</style>
 {% endblock %}
@@ -21,5 +26,17 @@
 {% block schema_data %}{% endblock %}
 
 {% block content %}
-	{{ post.post_content }}
+	<div class="blog-article-hero">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12 text-center blog-article-hero-overlay">
+					<div class="blog-article-hero-row">
+						<div class="blog-article-hero-cell">
+							<h1 class="blog-article-h1">{{ post.header_title }}</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
