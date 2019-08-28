@@ -6,6 +6,29 @@
 
 {% block inline_css %}
 	<style>
+		.blog-article-hero {
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+			height: 500px;
+			color: #fff;
+		}
+
+		.blog-article-hero-overlay {
+			height: 500px;
+			display: table;
+			padding: 100px;
+			background: rgba(56,56,56,0.5);
+		}
+
+		.blog-article-hero-row {
+			display: table-row;
+		}
+
+		.blog-article-hero-cell {
+			display: table-cell;
+			vertical-align: middle;
+		}
 
 		.blog-article-hero {
 			background-image: url("{{  post.featured_image.url }}");
@@ -32,7 +55,20 @@
 				<div class="col-12 text-center blog-article-hero-overlay">
 					<div class="blog-article-hero-row">
 						<div class="blog-article-hero-cell">
-							<h1 class="blog-article-h1">{{ post.header_title }}</h1>
+							<div class="row">
+								<div class="col-12 mb-4">
+									<h6 class="font-weight-normal">{{ post.post_category.first }}</h6>
+									<div class="row justify-content-center">
+										<div class="col-sm-1 col-2 arch-underline"></div>
+									</div>
+								</div>
+							</div>
+							<h1 class="text-white font-weight-bold">{{ post.header_title }}</h1>
+							<div class="mt-4">
+								<span class="mx-2">{{ post.publication_date|date:'F j, Y' }}</span>
+								<span class="align-middle mx-2" style="font-size: 10px;"><i class="fas fa-circle fa-xs"></i></span>
+								<span class="mx-2">Comments</span>
+							</div>
 						</div>
 					</div>
 				</div>
