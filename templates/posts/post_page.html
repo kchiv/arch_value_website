@@ -28,6 +28,15 @@
 			vertical-align: middle;
 		}
 
+		.comments-bt a {
+			text-decoration: none;
+			color: #FFF;
+		}
+
+		.comments-bt a:hover {
+			color: rgba(255,255,255,.75)
+		}
+
 		.social-icons .facebook-icon a {
 			color: #3C5A99;
 		}
@@ -205,6 +214,7 @@
 
 		{{ post.custom_js }}
 	</script>
+	<script id="dsq-count-scr" src="//arch-value-solutions.disqus.com/count.js" async></script>
 {% endblock %}
 
 {% block social_data %}{% endblock %}
@@ -230,7 +240,7 @@
 							<div class="mt-4">
 								<span class="mx-2">{{ post.publication_date|date:'F j, Y' }}</span>
 								<span class="align-middle mx-2" style="font-size: 10px;"><i class="fas fa-circle fa-xs"></i></span>
-								<span class="mx-2"><a href="#comments">Comments</a></span>
+								<span class="mx-2 comments-bt"><a href="{{ request.build_absolute_uri }}#disqus_thread">Comments</a></span>
 							</div>
 						</div>
 					</div>
@@ -242,7 +252,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12 blog-article-body">
-					<div class="social-icons mt-5 mb-4">
+					<div class="social-icons my-4">
 						<span class="mr-2 facebook-icon">
 							<a href="http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&title={{ post.header_title }}" target="popup" onclick="window.open('http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&title={{ post.header_title }}','popup','width=600,height=600'); return false;">
 								<i class="fab fa-facebook-square fa-2x"></i>
@@ -303,6 +313,29 @@
 					</p>
 				</div>
 			</div>
+
+
+			<div id="disqus_thread"></div>
+			<script>
+
+			/**
+			*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+			*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+			
+			var disqus_config = function () {
+			this.page.url = '{{ request.build_absolute_uri }}';  // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = {{ post.pk }}; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			};
+			
+			(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://arch-value-solutions.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 		</div>
 	</div>
