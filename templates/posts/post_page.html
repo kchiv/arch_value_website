@@ -112,6 +112,97 @@
 
 {% block script %}
 	<script>
+	$(document).ready(function(){
+		// empty vars to be set with global variables
+		// vars updated in functions
+		var currentIndex;
+		var catVar;
+
+		function parsePostList(blogPostList) {
+			// set index variable for iterator
+			var index = 0;
+			if (blogPostList.length < 1) {
+				// if blog post array empty, append error message
+				$('.related-blog').append('<div class="col-12 text-center"><h5 class="my-4">Currently there aren\'t any posts available.</h5></div>')
+			} else {
+				// if blog post array not empty, run loop on blog post array
+				$.each(blogPostList, function(key, value){
+					// grab blog post object properties
+					var postTitle = value.post_title
+					var postShortTitle = value.shorter_title
+					var postPubDate = value.pub_date
+					var postContent = value.strip_content
+					var postShortContent = value.shorter_content
+					var postUrl = value.post_url
+					// set category variable for checking if category exists
+					var postCategory;
+					// need to check if category exists otherwise it breaks
+					if (value.post_category[0]) {
+						postCategory = value.post_category[0].category_name
+					} else {
+						postCategory = 'General'
+					}
+
+					// set empty variable for post image
+					var postImg;
+					// logic checking if image objects exist
+					if (value.thumb_img) {
+						postImg = value.thumb_img
+					} else if (value.feat_img) {
+						postImg = value.feat_img
+					} else {
+						postImg = ''
+					}
+
+					// checks iterator count and breaks if above 5 objects
+					if (index > 2) {
+						return false
+					}
+
+					// index iterates by 1 through loop
+					index += 1
+					// if index value 1 or first post object, show post in featured format
+					// else show post in general format
+		
+					$('.related-blog').append(
+						'<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+					).hide().fadeIn(500);
+					
+
+				})
+			}
+		}
+
+		function fetchBlogPosts(tagId){
+			
+			fetchUrl = '/blog/api/category/' + '{{ post.post_category.first.category_slug }}' + '/'
+			console.log(fetchUrl)
+
+			$.ajax({
+				url: fetchUrl,
+				method: 'GET',
+				success: function(data){
+					// object result data
+					blogPostList = data['results']
+					
+					// execute function to parse blog post detail view
+					parsePostList(blogPostList)
+
+				},
+				error: function(data){
+					console.log('error')
+					console.log(data)
+				}
+			})
+
+		}
+
+		// automically execute function on page load
+		fetchBlogPosts();
+
+
+	});
+
 		{{ post.custom_js }}
 	</script>
 {% endblock %}
@@ -171,17 +262,20 @@
 					{{ post.post_content|safe }}
 
 					<!-- <blockquote class="blockquote mt-5 mb-4"><p class="font-weight-light font-italic arch-quote">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p><p class="small font-weight-light font-italic arch-quote">- Test Quote</p></blockquote> -->
-					
-						
-					<h4>
-						Related Articles<br>
-						<div class="col-2 mt-2 arch-underline"></div>
-					</h4>
-							
-						
-					
 				</div>
 			</div>
+
+			<div class="row my-4">
+				<div class="col-lg-8 col-md-10 col-12">
+					<h4>Related Articles</h4>
+					<div class="row ml-0">
+						<div class="col-2 arch-underline"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row related-blog">
+			</div>
+
 		</div>
 	</div>
 {% endblock %}
