@@ -286,6 +286,20 @@
 				</div>
 			</div>
 
+			<div class="row">
+				<div class="col-12">
+					<p>
+						{% for tag in post.post_tag.all %}
+							{% if not forloop.last %}
+								{{ tag.tag_name }}, 
+							{% else %}
+								{{ tag.tag_name }}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</div>
+			</div>
+
 		</div>
 	</div>
 {% endblock %}
