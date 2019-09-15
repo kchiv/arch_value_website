@@ -289,13 +289,17 @@
 			<div class="row">
 				<div class="col-12">
 					<p>
-						{% for tag in post.post_tag.all %}
-							{% if not forloop.last %}
-								{{ tag.tag_name }}, 
-							{% else %}
-								{{ tag.tag_name }}
-							{% endif %}
-						{% endfor %}
+						{% if post.post_tag.all %}
+							{% for tag in post.post_tag.all %}
+								{% if not forloop.last %}
+									{{ tag.tag_name }}, 
+								{% else %}
+									{{ tag.tag_name }}
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							No tags available.
+						{% endif %}
 					</p>
 				</div>
 			</div>
