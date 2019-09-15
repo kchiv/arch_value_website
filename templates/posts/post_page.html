@@ -10,12 +10,10 @@
 			background-repeat: no-repeat;
 			background-size: cover;
 			background-position: center;
-			height: 500px;
 			color: #fff;
 		}
 
 		.blog-article-hero-overlay {
-			height: 500px;
 			display: table;
 			padding: 100px;
 			background: rgba(56,56,56,0.5);
@@ -28,6 +26,80 @@
 		.blog-article-hero-cell {
 			display: table-cell;
 			vertical-align: middle;
+		}
+
+		.social-icons .facebook-icon a {
+			color: #3C5A99;
+		}
+
+		.social-icons .twitter-icon a {
+			color: #00ACEE;
+		}
+
+		.social-icons .linkedin-icon a {
+			color: #0E76A8;
+		}
+
+		.social-icons a {
+			text-decoration: none;
+		}
+
+		/** Body Elements **/
+		.blog-article-body img {
+			max-width: 100%;
+			height: auto;
+		}
+
+		.arch-quote:first-child:before {
+			font-family: "Font Awesome 5 Free";
+			font-style: normal;
+			content: "\f10d";
+			color: #b8b8b8;
+			font-size: 3em;
+			font-weight: 700;
+			opacity: .3;
+			position: absolute;
+			margin-top: -40px;
+			text-shadow: none;
+		}
+
+
+		@media (max-width: 767.98px) {
+			.blog-article-hero-overlay {
+				padding: 100px 5px 100px 5px;
+			}
+		}
+
+		@media (min-width: 767.98px) {
+			.blog-article-body p,
+			.blog-article-body ul,
+			.blog-article-body ol,
+			.blog-article-body h1,
+			.blog-article-body h2,
+			.blog-article-body h3,
+			.blog-article-body h4,
+			.blog-article-body h5,
+			.blog-article-body h6,
+			.blog-article-body blockquote,
+			.blog-article-body .social-icons {
+				width: 80%;
+				margin: auto;
+			}
+
+			.blog-article-body p,
+			.blog-article-body ul,
+			.blog-article-body ol,
+			.blog-article-body h1,
+			.blog-article-body h2,
+			.blog-article-body h3,
+			.blog-article-body h4,
+			.blog-article-body h5,
+			.blog-article-body h6,
+			.blog-article-body blockquote,
+			.blog-article-body .social-icons {
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
 		}
 
 		.blog-article-hero {
@@ -55,7 +127,7 @@
 				<div class="col-12 text-center blog-article-hero-overlay">
 					<div class="blog-article-hero-row">
 						<div class="blog-article-hero-cell">
-							<div class="row">
+							<div class="row mx-0">
 								<div class="col-12 mb-4">
 									<h6 class="font-weight-normal">{{ post.post_category.first }}</h6>
 									<div class="row justify-content-center">
@@ -67,10 +139,47 @@
 							<div class="mt-4">
 								<span class="mx-2">{{ post.publication_date|date:'F j, Y' }}</span>
 								<span class="align-middle mx-2" style="font-size: 10px;"><i class="fas fa-circle fa-xs"></i></span>
-								<span class="mx-2">Comments</span>
+								<span class="mx-2"><a href="#comments">Comments</a></span>
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bg-white">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 blog-article-body">
+					<div class="social-icons mt-5 mb-4">
+						<span class="mr-2 facebook-icon">
+							<a href="http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&title={{ post.header_title }}" target="popup" onclick="window.open('http://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}&title={{ post.header_title }}','popup','width=600,height=600'); return false;">
+								<i class="fab fa-facebook-square fa-2x"></i>
+							</a>
+						</span>
+						<span class="mr-2 twitter-icon">
+							<a href="http://twitter.com/intent/tweet?status={{ post.header_title }}+{{ request.build_absolute_uri }}" target="popup" onclick="window.open('http://twitter.com/intent/tweet?status={{ post.header_title }}+{{ request.build_absolute_uri }}','popup','width=600,height=600'); return false;">
+								<i class="fab fa-twitter-square fa-2x"></i>
+							</a>
+						</span>
+						<span class="linkedin-icon">
+							<a href="http://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.header_title }}&source=archvaluesolutions.com" target="popup" onclick="window.open('http://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.header_title }}&source=archvaluesolutions.com','popup','width=600,height=600'); return false;">
+								<i class="fab fa-linkedin fa-2x"></i>
+							</a>
+						</span>
+					</div>
+					{{ post.post_content|safe }}
+
+					<!-- <blockquote class="blockquote mt-5 mb-4"><p class="font-weight-light font-italic arch-quote">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p><p class="small font-weight-light font-italic arch-quote">- Test Quote</p></blockquote> -->
+					
+						
+					<h4>
+						Related Articles<br>
+						<div class="col-2 mt-2 arch-underline"></div>
+					</h4>
+							
+						
+					
 				</div>
 			</div>
 		</div>
