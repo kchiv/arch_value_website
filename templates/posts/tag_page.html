@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}{{ tag.tag_name }}{{ block.super }}{% endblock %}
+{% block title %}{{ tag.tag_name }} | Tag{{ block.super }}{% endblock %}
 
 {% block description %}Needs description{% endblock %}
 
@@ -236,22 +236,22 @@ $(document).ready(function(){
 				var allUrl = '/blog/api/tag/' + '{{ tag.pk }}' + '/'
 
 				// checks which API is being called and connects to correct path
-				if (fetchUrl.includes('list-post')){
-					if (prevNumberOffsetOne > 0) {
-						prevOffsetOnePostUrl = allUrl + '?page=' + prevNumberOffsetOne
-					} else {
-						prevOffsetOnePostUrl = undefined
-					}
-
-					if (nextNumberOffsetOne <= totalPages) {
-						nextOffsetOnePostUrl = allUrl + '?page=' + nextNumberOffsetOne
-					} else {
-						nextOffsetOnePostUrl = undefined
-					}
-
-					startUrl = allUrl
-					endUrl = allUrl + '?page=' +totalPages
+				
+				if (prevNumberOffsetOne > 0) {
+					prevOffsetOnePostUrl = allUrl + '?page=' + prevNumberOffsetOne
+				} else {
+					prevOffsetOnePostUrl = undefined
 				}
+
+				if (nextNumberOffsetOne <= totalPages) {
+					nextOffsetOnePostUrl = allUrl + '?page=' + nextNumberOffsetOne
+				} else {
+					nextOffsetOnePostUrl = undefined
+				}
+
+				startUrl = allUrl
+				endUrl = allUrl + '?page=' +totalPages
+				
 				
 				// execute function to parse posts
 				parsePosts()
