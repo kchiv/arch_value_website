@@ -7,11 +7,375 @@
 {% block description %}Needs description{% endblock %}
 
 {% block inline_css %}
+<style type="text/css">
+	.blog-hp-hero-bg {
+		background: linear-gradient(135deg, #E75C00c4 0%, #E89000c4 100%), url({% static 'img/DSC_2859.jpg' %});
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		color: #fff;
+	}
+
+	.light-gray-arch-bg {
+		background-color: #f7f7f7;
+	}
+</style>
 {% endblock %}
 
 {% block script %}
+<script>
+
+$(document).ready(function(){
+	// empty list to be filled with post objects
+	var postList = [];
+	// empty vars to be set with global variables
+	// vars updated in functions
+	var currentIndex;
+	var prevNumber;
+	var nextNumber;
+	var nextPostUrl;
+	var prevPostUrl;
+	var nextNumberOffsetOne;
+	var prevNumberOffsetOne;
+	var nextOffsetOnePostUrl;
+	var prevOffsetOnePostUrl;
+	var startUrl;
+
+
+	function parsePosts(){
+		// function used to parse and format posts
+		if (postList == 0){
+			// checks if post list is empty
+			// empty container before displaying message regaring 0 object
+			$('#featured-post').empty()
+			$('#general-post').empty()
+			// error message if 0 post objects available
+			$('#featured-post').append('<h3 class="text-center py-5">Currently there aren\'t any posts available.</h3>')
+		} else {
+			// index set to determine post number in list
+			// index value used in logic for featured post vs general post
+			var index = 0;
+			// empty all general post cards before parsing and appending
+			$('#general-post').empty()
+			// loop through post list
+			$.each(postList, function(key, value){
+				var postTitle = value.post_title
+				var postShortTitle = value.shorter_title
+				var postPubDate = value.pub_date
+				var postContent = value.strip_content
+				var postShortContent = value.shorter_content
+				var postUrl = value.post_url
+				// set category variable for checking if category exists
+				var postCategory;
+				// need to check if category exists otherwise it breaks
+				if (value.post_category[0]) {
+					postCategory = value.post_category[0].category_name
+				} else {
+					postCategory = 'General'
+				}
+
+				// set empty variable for post image
+				var postImg;
+				// logic checking if image objects exist
+				if (value.thumb_img) {
+					postImg = value.thumb_img
+				} else if (value.feat_img) {
+					postImg = value.feat_img
+				} else {
+					postImg = ''
+				}
+
+				// index iterates by 1 through loop
+				index += 1
+				// if index value 1 or first post object, show post in featured format
+				// else show post in general format
+				if (index == 1) {
+					$('#featured-post').html(
+						'<div class="card blog-card my-4"><div class="row no-gutters"><div class="col-md-4 rounded blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="col-md-8 d-flex align-items-center"><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postTitle + '</a></h5><p class="card-text">' + postContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div></div>'
+					).hide().fadeIn(500);
+				} else {
+					$('#general-post').append(
+						'<div class="col-lg-4 col-md-6 col-12 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
+					).hide().fadeIn(500);
+				}
+
+			})
+
+		}
+	}
+
+	// function building pagiation logic
+	function buildPagination(){
+		
+		// set var to empty string - used to build full pagination element
+		var pagLinks = '';
+
+		// check if previous page url exists in API - if exists add previous arrow to string
+		if (prevPostUrl) {
+			pagLinks += '<li class="page-item"><a class="page-link" id="pageBeginning" href="#"><i class="fas fa-angle-double-left"></i></a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#"><i class="fas fa-angle-left"></i></a></li>'
+		}
+
+		// check if previous page url exists and next page url does not exist in API
+		// if true, user at end of pagination sequence
+		if (prevPostUrl && !nextPostUrl){
+			var prevOffsetOne = prevNumber - 1;
+			if (prevOffsetOne > 0){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li>'
+			}
+		}
+
+		// check if next page url exists and previous page url exists in API
+		// if both true, user in middle of pagination sequence
+		if (prevPostUrl && nextPostUrl){
+			var prevOffsetOne = prevNumber - 1;
+			var nextOffsetOne = nextNumber + 1;
+			if (prevOffsetOne > 0 && nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'	
+			} else if (prevOffsetOne <= 0 && nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+			} else if (prevOffsetOne > 0 && nextOffsetOne > totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link" id="previousOffsetOne" href="#">' + prevOffsetOne + '</a></li><li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link" id="pagePrevious" href="#">' + prevNumber + '</a></li><li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			}
+		}
+
+		// check if next page url exists and previous page url does not exist in API
+		// if true, user at beginning of pagination sequence
+		if (!prevPostUrl && nextPostUrl){
+			var nextOffsetOne = nextNumber + 1;
+			if (nextOffsetOne <= totalPages){
+				pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li><li class="page-item"><a class="page-link" id="nextOffsetOne" href="#">' + nextOffsetOne + '</a></li>'
+			} else {
+				pagLinks += '<li class="page-item"><a class="page-link active" href="#">' + currentIndex + '</a></li><li class="page-item"><a class="page-link" id="pageNext" href="#">' + nextNumber + '</a></li>'
+			}	
+		}
+
+		// check if next page url exists in API - if exists add next arrow to string
+		if (nextPostUrl) {
+			pagLinks += '<li class="page-item"><a class="page-link" id="pageNext" href="#"><i class="fas fa-angle-right"></i></a></li><li class="page-item"><a class="page-link" id="pageEnd" href="#"><i class="fas fa-angle-double-right"></i></a></li>'
+		}
+
+		// after pagLinks variable fully built, add to page via html()
+		$('#pagination-list').html(pagLinks).hide().fadeIn(500);
+	}
+
+	function fetchPosts(url){
+		// checks if category slug argument is passed through function
+		// if it is passed through the function, the global variable is updated
+		// if it isn't passed through the function, the variable remains the same
+		// check if url argument passed through function
+		if (!url) {
+			// default url if no url argument passed through
+			fetchUrl = '/blog/api/tag/' + '{{ tag.pk }}' + '/'
+		} else {
+			fetchUrl = url
+		}
+		$.ajax({
+			url: fetchUrl,
+			method: 'GET',
+			success: function(data){
+				// grab api url data
+				currentUrl = fetchUrl
+
+				// set current index
+				if (data['prev_page_num']) {
+					currentIndex = data['prev_page_num'] + 1
+				} else {
+					currentIndex = 1
+				}
+				
+				// set previous page index
+				if (data['prev_page_num']) {
+					prevNumber = data['prev_page_num']
+				} else {
+					prevNumber = undefined
+				}
+				
+				// set next page index
+				if (data['nex_page_num']) {
+					nextNumber = data['nex_page_num']
+				} else {
+					nextNumber = undefined
+				}
+
+				// set previous page index offset 1
+				if (prevNumber) {
+					prevNumberOffsetOne = prevNumber - 1
+				} else {
+					prevNumberOffsetOne = undefined
+				}
+
+				// set next page index offset 1
+				if (nextNumber) {
+					nextNumberOffsetOne = nextNumber + 1
+				} else {
+					nextNumberOffsetOne = undefined
+				}
+				
+				// set total pages
+				totalPages = data['total_pages']
+				// object result data
+				postList = data['results']
+				// check if next and previous api urls exist
+				// must set to undefined if they do not exist in order to clear variable
+				if (data.next){
+					nextPostUrl = data.next
+				} else {
+					nextPostUrl = undefined
+				}
+				if (data.previous){
+					prevPostUrl = data.previous
+				} else {
+					prevPostUrl = undefined
+				}
+
+				// set var urls to be used depending on which api is called
+				var allUrl = '/blog/api/tag/' + '{{ tag.pk }}' + '/'
+
+				// checks which API is being called and connects to correct path
+				if (fetchUrl.includes('list-post')){
+					if (prevNumberOffsetOne > 0) {
+						prevOffsetOnePostUrl = allUrl + '?page=' + prevNumberOffsetOne
+					} else {
+						prevOffsetOnePostUrl = undefined
+					}
+
+					if (nextNumberOffsetOne <= totalPages) {
+						nextOffsetOnePostUrl = allUrl + '?page=' + nextNumberOffsetOne
+					} else {
+						nextOffsetOnePostUrl = undefined
+					}
+
+					startUrl = allUrl
+					endUrl = allUrl + '?page=' +totalPages
+				}
+				
+				// execute function to parse posts
+				parsePosts()
+
+				// checks number of total pages in api
+				if (totalPages > 1){
+					buildPagination()
+				} else {
+					// remove pagination element if < 1 page exists
+					$('#pagination-list').empty()
+				}
+			},
+			error: function(data){
+				console.log('error')
+				console.log(data)
+			}
+		})
+	}
+
+	// scrolls user to top of page - used on pagination clicks
+	function scrollerTop() {
+		$("body,html").animate(
+			{
+				scrollTop: $("#categoryH1").offset().top
+			},
+			200
+		)
+	}
+
+	// automically execute function on page load
+	fetchPosts();
+
+	// event handlers for pagination
+	$(document).on('click', '#pageBeginning', function(event){
+		event.preventDefault()
+		console.log(startUrl)
+		if (startUrl){
+			fetchPosts(startUrl)
+		}
+		scrollerTop()
+	})
+
+	// event handlers for pagination
+	$(document).on('click', '#pageEnd', function(event){
+		event.preventDefault()
+		console.log(endUrl)
+		if (endUrl){
+			fetchPosts(endUrl)
+		}
+		scrollerTop()
+	})
+
+	// event handlers for pagination
+	$(document).on('click', '#pagePrevious', function(event){
+		event.preventDefault()
+		console.log(prevPostUrl)
+		if (prevPostUrl){
+			fetchPosts(prevPostUrl)
+		}
+		scrollerTop()
+	})
+
+	$(document).on('click', '#pageNext', function(event){
+		event.preventDefault()
+		console.log(nextPostUrl)
+		if (nextPostUrl){
+			fetchPosts(nextPostUrl)
+		}
+		scrollerTop()
+	})
+
+	$(document).on('click', '#nextOffsetOne', function(event){
+		event.preventDefault()
+		console.log(nextOffsetOnePostUrl)
+		if (nextOffsetOnePostUrl){
+			fetchPosts(nextOffsetOnePostUrl)
+		}
+		scrollerTop()
+	})
+
+	$(document).on('click', '#previousOffsetOne', function(event){
+		event.preventDefault()
+		console.log(prevOffsetOnePostUrl)
+		if (prevOffsetOnePostUrl){
+			fetchPosts(prevOffsetOnePostUrl)
+		}
+		scrollerTop()
+	})
+
+
+});
+</script>
 {% endblock %}
 
 {% block content %}
-	{{ tag.tag_name }}
+	<!-- hero -->
+	<div class="blog-hp-hero-bg">
+		<div class="container">
+			<div class="row py-5">
+				<div class="col-lg-6 col-md-8">
+					<h1 class="text-white pt-5">Tag: {{ tag.tag_name }}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- blog post cards -->
+	<div class="light-gray-arch-bg">
+		<div class="container">
+			<div class="row" id="categoryH1">
+				
+			</div>
+			<div class="row justify-content-center">
+				<div id="featured-post" class="col-12">
+				</div>
+			</div>
+			<div class="row" id="general-post">
+			</div>
+			<div class="row justify-content-center">
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination pag-custom pb-0" id="pagination-list">
+				  	<!-- jquery appends pagination -->
+				  </ul>
+				</nav>
+			</div>
+		</div>
+	</div>
 {% endblock %}
