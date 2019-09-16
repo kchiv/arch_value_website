@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic.base import TemplateView
-from .models import Post, Category
+from .models import Post, Category, Tag
 from rest_framework import generics
 from .serializers import PostSerializer
 from .pagination import StandardResultsPagination
@@ -33,6 +33,14 @@ def post_detail(request, post_slug, post_id):
 		'post': post
 	}
 	return render(request, 'posts/post_page.html', context)
+
+def tag_detail(request, tag_slug, tag_id):
+	tag = get_object_or_404(Tag, pk=tag_id, tag_slug=tag_slug)
+
+	context = {
+		'tag': tag
+	}
+	return render(request, 'posts/tag_page.html', context)
 
 class ListPostView(generics.ListAPIView):
 	queryset = Post.objects.filter(is_published=True).order_by('-publication_date')
