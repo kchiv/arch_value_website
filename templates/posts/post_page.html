@@ -302,9 +302,9 @@
 						{% if post.post_tag.all %}
 							{% for tag in post.post_tag.all %}
 								{% if not forloop.last %}
-									{{ tag.tag_name }}, 
+									<a class="badge badge-secondary" href="{% url 'posts:tag_detail' tag.tag_slug tag.pk %}">{{ tag.tag_name }}</a>
 								{% else %}
-									{{ tag.tag_name }}
+									<a class="badge badge-secondary" href="{% url 'posts:tag_detail' tag.tag_slug tag.pk %}">{{ tag.tag_name }}</a>
 								{% endif %}
 							{% endfor %}
 						{% else %}
@@ -324,8 +324,12 @@
 				</div>
 			</div>
 
+			<div class="row pb-4">
+				<div class="col-12">
+					<div id="disqus_thread"></div>
+				</div>
+			</div>
 
-			<div id="disqus_thread"></div>
 			<script>
 
 			/**
