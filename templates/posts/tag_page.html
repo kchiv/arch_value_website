@@ -1,1 +1,17 @@
-{{tag.tag_name}}
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ tag.tag_name }}{{ block.super }}{% endblock %}
+
+{% block description %}Needs description{% endblock %}
+
+{% block inline_css %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+	{{ tag.tag_name }}
+{% endblock %}
