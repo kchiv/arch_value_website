@@ -9,7 +9,7 @@
 
     <title>{% block title %} | Arch Value Solutions{% endblock %}</title>
     <meta name="description" content="{% block description %}{% endblock %}"/>
-    <!-- Need to build canonical logic <link rel="canonical" href=""> -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     {% block social_data %}{% endblock %}
     {% block schema_data %}{% endblock %}
