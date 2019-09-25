@@ -217,9 +217,24 @@
 	<script id="dsq-count-scr" src="//arch-value-solutions.disqus.com/count.js" async></script>
 {% endblock %}
 
-{% block social_data %}{% endblock %}
+{% block social_data %}
+    {# Facebook OG Tags   #}
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ post.meta_title }}" />
+    <meta property="og:description" content="{{ post.meta_description }}" />
+    <meta property="og:image" content="{{ post.featured_image.url }}" />
+    {#  Twitter Card Tags  #}
+    <meta name="twitter:card" content="summary_large_image" />
+    {#<meta name="twitter:site" content="" />#}
+    <meta name="twitter:title" content="{{ post.meta_title }}" />
+    <meta name="twitter:description" content="{{ post.meta_description }}" />
+    <meta name="twitter:image" content="{{ post.featured_image.url }}" />
+{% endblock %}
 
-{% block schema_data %}{% endblock %}
+{% block schema_data %}
+
+{% endblock %}
 
 {% block content %}
 	<div class="blog-article-hero">
