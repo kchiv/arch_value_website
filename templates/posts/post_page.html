@@ -172,11 +172,11 @@
 					index += 1
 					// if index value 1 or first post object, show post in featured format
 					// else show post in general format
-		
+
 					$('.related-blog').append(
 						'<div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch"><div class="card blog-card"><div class="card-img-top blog-img blog-row" style="background-image: url(\'' + postImg + '\');"></div><div class="card-body"><span class="small arch-orange">' + postCategory + '</span><i class="fas fa-circle align-middle mx-2"></i><span class="small text-muted">' + postPubDate + '</span><h5 class="card-title"><a href="' + postUrl + '">' + postShortTitle + '</a></h5><p class="card-text">' + postShortContent + '</p><div class="row"><div class="col-6"><a href="' + postUrl + '" class="btn btn-outline-primary btn-block arch-btn-outline-primary" role="button" aria-pressed="true">Read More</a></div></div></div></div></div>'
 					).hide().fadeIn(500);
-					
+
 
 				})
 			}
